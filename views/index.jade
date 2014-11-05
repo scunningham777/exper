@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to our test.
+
+    // Wrapper
+    #wrapper
+
+        //SKILL LIST VIEW WRAPPER
+        #skillListView
+
+            // SKILL LIST
+            h2 Skill List
+            #skillList
+                table
+                    thead
+                        th Skill Name
+                        th Hours Invested
+                    tbody
+            // /SKILL LIST
+
+            // ADD NEW SKILL
+            h2 Add New Skill
+            #addSkill
+                fieldset
+                    input#inputSkillName(type="text", placeholder="Skill name")
+                    button#btnAddSkill Add Skill
+            // /ADD NEW SKILL
+
+        // /SKILL LIST VIEW WRAPPER
+
+        //ADD SESSION VIEW WRAPPER
+        #addSessionView
+
+            //ADD NEW SESSION
+            h2 Enter a New Productivity Session
+            #addSession
+                fieldset
+                    label(for="primarySkill") What was the primary skill focused on?
+                        select#selectPrimaryAssociatedSkill(name="primarySkill")
+                    br
+                    label(for="duration") How long was the session (round to nearest quarter hour)?
+                        input#inputSessionDuration(name="duration", type="number", min="0", max="24", value="0", step=".25")
+                    div.buttonRow
+                        button#btnCancelAddSession Cancel
+                        button#btnSubmitAddSession Submit
+
+            // /ADD NEW SESSION
+
+        // /ADD SESSION VIEW WRAPPER
+
+    // /WRAPPER
