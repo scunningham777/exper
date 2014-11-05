@@ -41,7 +41,7 @@ function populateSkillTable() {
         $.each(data, function(){
             tableContent += '<tr>';
             tableContent += '<td><a href="" class="linkexpandskill" rel="' + this.name + '" title="Show Details">' + this.name + '</a></td>';
-            tableContent += '<td>' + 0 + '</td>';
+            tableContent += '<td>' + this.totalDuration + '</td>';
 //            tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">delete</a></td>';
             tableContent += '</tr>';
         });

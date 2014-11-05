@@ -18,15 +18,25 @@ var router = express.Router();
 router.get('/', function(req, res) {
     var db = req.db;
     db.collection('usercollection').findById('544d8ff19216375f8f23fade', function (err, result) {
-        var formattedResults = [];
-        var skillIter;
+        var convertedResults = [];
+        var currentSkill;
         var skillDuration;
 
         result.skills.forEach(function(value, index, array) {
-            skillIter = {'name': value.name};
-            
+            currentSkill = {'name': value.name};
+            skillDuration = 0;
+            if (value.sessions){
+                value.sessions.forEach(function(value, index, array) {
+                    skillDuration += parseInt(value.duration);
+                })
+                currentSkill.totalDuration = skillDuration;
+            }
+            else {
+                currentSkill.totalDuration = 0;
+            }
+            convertedResults.push(currentSkill);
         })
-        res.json(result.skills);
+        res.json(convertedResults);
     });
 });
 
