@@ -17,25 +17,28 @@ var router = express.Router();
  */
 router.get('/', function(req, res) {
     var db = req.db;
-    db.collection('usercollection').findById('544d8ff19216375f8f23fade', function (err, result) {
+//    db.collection('usercollection').findById('544d8ff19216375f8f23fade', function (err, result) {
+    db.collection('usercollection').findById('544d92099216375f8f23fae0', function (err, result) {    
         var convertedResults = [];
         var currentSkill;
         var skillDuration;
 
-        result.skills.forEach(function(value, index, array) {
-            currentSkill = {'name': value.name};
-            skillDuration = 0;
-            if (value.sessions){
-                value.sessions.forEach(function(value, index, array) {
-                    skillDuration += parseInt(value.duration);
-                })
-                currentSkill.totalDuration = skillDuration;
-            }
-            else {
-                currentSkill.totalDuration = 0;
-            }
-            convertedResults.push(currentSkill);
-        })
+        if (result.skills !== null && result.length > 0){
+            result.skills.forEach(function(value, index, array) {
+                currentSkill = {'name': value.name};
+                skillDuration = 0;
+                if (value.sessions){
+                    value.sessions.forEach(function(value, index, array) {
+                        skillDuration += parseInt(value.duration);
+                    })
+                    currentSkill.totalDuration = skillDuration;
+                }
+                else {
+                    currentSkill.totalDuration = 0;
+                }
+                convertedResults.push(currentSkill);
+            })
+        }
         res.json(convertedResults);
     });
 });
@@ -46,7 +49,8 @@ router.get('/', function(req, res) {
 //TODO: only push if a skill with the same name does not exist already!
 router.post('/addskill', function(req, res) {
     var db = req.db;
-    db.collection('usercollection').updateById('544d8ff19216375f8f23fade', {'$push': {skills: req.body}}, function(err, result){
+//    db.collection('usercollection').updateById('544d8ff19216375f8f23fade', {'$push': {skills: req.body}}, function(err, result){
+    db.collection('usercollection').updateById('544d92099216375f8f23fae0', {'$push': {skills: req.body}}, function(err, result){
         res.send(
             (err === null) ? { msg: '' } : { msg: err }
         );

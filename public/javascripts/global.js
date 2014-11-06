@@ -19,7 +19,9 @@ $(document).ready(function() {
     $('#btnSubmitAddSession').on('click', submitNewSession);
 
     // Populate the user table on initial page load
-    populateSkillTable();
+//    populateSkillTable();
+    // default to add new session view, which will redirect to skills list if no skills exist for user
+    openNewSessionView();
 
 });
 
@@ -37,14 +39,19 @@ function populateSkillTable() {
     // jQuery AJAX call for JSON
     $.getJSON( '/skills', function( data ) {
 
-        // For each item in our JSON, add a table row and cells to the content string
-        $.each(data, function(){
-            tableContent += '<tr>';
-            tableContent += '<td><a href="" class="linkexpandskill" rel="' + this.name + '" title="Show Details">' + this.name + '</a></td>';
-            tableContent += '<td>' + this.totalDuration + '</td>';
-//            tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">delete</a></td>';
-            tableContent += '</tr>';
-        });
+        if (data.length > 0){
+            // For each item in our JSON, add a table row and cells to the content string
+            $.each(data, function(){
+                tableContent += '<tr>';
+                tableContent += '<td><a href="" class="linkexpandskill" rel="' + this.name + '" title="Show Details">' + this.name + '</a></td>';
+                tableContent += '<td>' + this.totalDuration + '</td>';
+    //            tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">delete</a></td>';
+                tableContent += '</tr>';
+            });
+        }
+        else {
+            tableContent = '<tr style="color:red"><td>No Skills yet!</td><td>Add a new one below</td></tr>';
+        }
 
         // Inject the whole content string into our existing HTML table
         $('#skillList table tbody').html(tableContent);
@@ -93,22 +100,28 @@ function addSkill(event) {
 }
 
 function openNewSessionView(event) {
-    event.preventDefault();
+    if (event != null) {
+        event.preventDefault();
+    }
 
     hideAllViews();
+    $('#inputSessionDuration').val(0);
     $('#addSessionView').show();
 
     // Empty content string
     var formContent = '';
 
     var selectedUser = '';
-    if ($(this).attr('rel') !== null) {
+    if (event !== null && $(this).attr('rel') !== null) {
         selectedUser = $(this).attr('rel');
     }
 
     // jQuery AJAX call for JSON
     $.getJSON( '/skills', function( data ) {
-
+        if (data == null || data.length <= 0) {
+            populateSkillTable();
+            return;
+        }
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data, function(){
             formContent += '<option value="' + this.name + '"';
@@ -128,34 +141,36 @@ function submitNewSession(event) {
     event.preventDefault();
 
     //check to make sure the duration value is not negative
-    if ($('#inputSessionDuration').val() > '0') {
-        var newSession = {
-            'duration': $('#inputSessionDuration').val(),
-            'date': new Date()
-        };
+    if ($('#inputSessionDuration').val() > '0') { 
+        if ($('#inputSessionDuration').val() <= 10 || confirm("Are you sure you practiced this skill for " + $('#inputSessionDuration').val() + " hours?")) {
+            var newSession = {
+                'duration': $('#inputSessionDuration').val(),
+                'date': new Date()
+            };
 
-        var urlString = '/skills/' + $('#selectPrimaryAssociatedSkill').val() + '/sessions/addsession';
+            var urlString = '/skills/' + $('#selectPrimaryAssociatedSkill').val() + '/sessions/addsession';
 
-        //use AJAX to post the object to our addSkill service
-        $.ajax({
-            type: 'POST',
-            data: newSession,
-            url: urlString,
-            dataType: 'JSON'
-        }).done(function( response ) {
+            //use AJAX to post the object to our addSkill service
+            $.ajax({
+                type: 'POST',
+                data: newSession,
+                url: urlString,
+                dataType: 'JSON'
+            }).done(function( response ) {
 
-            //check for successful (blank) response
-            if (response.msg === '') {
+                //check for successful (blank) response
+                if (response.msg === '') {
 
-                //Return to skill list
-                populateSkillTable();
-            }
-            else {
-                 // If something goes wrong, alert the error message that our service returned
-                alert('Error: ' + response.msg);
+                    //Return to skill list
+                    populateSkillTable();
+                }
+                else {
+                     // If something goes wrong, alert the error message that our service returned
+                    alert('Error: ' + response.msg);
 
-            }
-        });
+                }
+            });
+        }
     }
     else {
         // If errorCount is more than 0, error out
