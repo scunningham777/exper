@@ -42,6 +42,9 @@ block content
                     br
                     label(for="duration") How long was the session (round to nearest quarter hour)?
                         input#inputSessionDuration(name="duration", type="number", min="0", max="24", value="0", step=".25")
+                    br
+                    label(for="sessionDate") Date of the Session:
+                        input#inputSessionDate(name="sessionDate", type="date")
                     div.buttonRow
                         button#btnCancelAddSession Cancel
                         button#btnSubmitAddSession Submit

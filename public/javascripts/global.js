@@ -106,6 +106,8 @@ function openNewSessionView(event) {
 
     hideAllViews();
     $('#inputSessionDuration').val(0);
+    var now = new Date();
+    document.getElementById('inputSessionDate').valueAsDate = now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     $('#addSessionView').show();
 
     // Empty content string
@@ -145,7 +147,7 @@ function submitNewSession(event) {
         if ($('#inputSessionDuration').val() <= 10 || confirm("Are you sure you practiced this skill for " + $('#inputSessionDuration').val() + " hours?")) {
             var newSession = {
                 'duration': $('#inputSessionDuration').val(),
-                'date': new Date()
+                'date': new Date($('#inputSessionDate').val())
             };
 
             var urlString = '/skills/' + $('#selectPrimaryAssociatedSkill').val() + '/sessions/addsession';

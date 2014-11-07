@@ -23,13 +23,13 @@ router.get('/', function(req, res) {
         var currentSkill;
         var skillDuration;
 
-        if (result.skills !== null && result.length > 0){
+        if (result.skills != null && result.skills.length > 0){
             result.skills.forEach(function(value, index, array) {
                 currentSkill = {'name': value.name};
                 skillDuration = 0;
-                if (value.sessions){
+                if (value.sessions != null && value.sessions.length > 0){
                     value.sessions.forEach(function(value, index, array) {
-                        skillDuration += parseInt(value.duration);
+                        skillDuration += parseFloat(value.duration);
                     })
                     currentSkill.totalDuration = skillDuration;
                 }
