@@ -1,5 +1,3 @@
-// Userlist data array for filling in info box
-var userListData = [];
 
 // DOM Ready =============================================================
 $(document).ready(function() {
@@ -13,13 +11,14 @@ $(document).ready(function() {
 
     //Click on a skill name
     $('#skillList table tbody').on('click', 'td a.linkexpandskill', openNewSessionView);
+
+    //Click to open new session form
+    $('#btnNewSession').on('click', openNewSessionView);
  
     //Add Session button click
     $('#btnCancelAddSession').on('click', populateSkillTable);
     $('#btnSubmitAddSession').on('click', submitNewSession);
 
-    // Populate the user table on initial page load
-//    populateSkillTable();
     // default to add new session view, which will redirect to skills list if no skills exist for user
     openNewSessionView();
 

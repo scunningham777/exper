@@ -8,7 +8,7 @@ block content
     #wrapper
 
         //SKILL LIST VIEW WRAPPER
-        #skillListView
+        #skillListView(style="display:none")
 
             // SKILL LIST
             h2 Skill List
@@ -27,11 +27,15 @@ block content
                     input#inputSkillName(type="text", placeholder="Skill name")
                     button#btnAddSkill Add Skill
             // /ADD NEW SKILL
+            br
+            // OPEN NEW SESSION FORM
+            button#btnNewSession Add a New Session
+            // /OPEN NEW SESSION FORM
 
         // /SKILL LIST VIEW WRAPPER
 
         //ADD SESSION VIEW WRAPPER
-        #addSessionView
+        #addSessionView(style="display:none")
 
             //ADD NEW SESSION
             h2 Enter a New Productivity Session
