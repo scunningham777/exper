@@ -41,6 +41,10 @@ a {
 				text-align:center;
 			}
 
+	#skillList table.inner {
+		width: 100%;
+	}
+
 #userInfo {
 	width:250px;
 	position:absolute;

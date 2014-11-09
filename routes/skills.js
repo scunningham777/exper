@@ -69,8 +69,28 @@ router.post('/addskill', function(req, res) {
  */
 /*router.get('/', function(req, res) {
     var db = req.db;
-    db.collection('skillcollection').find().toArray(function (err, items) {
-        res.json(items);
+    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade'}).toArray(function (err, items) {
+        var convertedResults = [];
+        var currentSkill;
+        var skillDuration;
+
+        if (items.skills != null && items.skills.length > 0){
+            items.skills.forEach(function(value, index, array) {
+                currentSkill = {'name': value.name};
+                skillDuration = 0;
+                if (value.sessions != null && value.sessions.length > 0){
+                    value.sessions.forEach(function(value, index, array) {
+                        skillDuration += parseFloat(value.duration);
+                    })
+                    currentSkill.totalDuration = skillDuration;
+                }
+                else {
+                    currentSkill.totalDuration = 0;
+                }
+                convertedResults.push(currentSkill);
+            })
+        }
+        res.json(convertedResults);
     });
 });
 */
@@ -80,11 +100,20 @@ router.post('/addskill', function(req, res) {
  */
 /*router.post('/addskill', function(req, res) {
 	var db = req.db;
-    db.collection('skillcollection').insert(req.body, function(err, result){
-        res.send(
-            (err === null) ? { msg: '' } : { msg: err }
-        );
-    });
+    var requestedSkillAlreadyExists = false;
+    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade', name:req.body.name}, function(err, result) {
+        if (result.length > 0) {
+            requestedSkillAlreadyExists = true;
+            res.send( msg: 'Skill with same name already exists');
+        }
+    })
+    if (requestedSkillAlreadyExists == false){
+        db.collection('skillcollection').insert({user_id:'544d8ff19216375f8f23fade', name:req.body.name}, function(err, result){
+            res.send(
+                (err === null) ? { msg: '' } : { msg: err }
+            );
+        });
+    }
 })
 */
 

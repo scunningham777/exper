@@ -18,19 +18,19 @@ block content
                         th Skill Name
                         th Hours Invested
                     tbody
+                    tfoot
+                        tr#addSkill
+                            td 
+                                input#inputSkillName(type="text", placeholder="New Skill name")
+                            td 
+                                button#btnAddSkill Add Skill
             // /SKILL LIST
 
-            // ADD NEW SKILL
-            h2 Add New Skill
-            #addSkill
-                fieldset
-                    input#inputSkillName(type="text", placeholder="Skill name")
-                    button#btnAddSkill Add Skill
-            // /ADD NEW SKILL
-            br
             // OPEN NEW SESSION FORM
             button#btnNewSession Add a New Session
             // /OPEN NEW SESSION FORM
+            // SWITCH TO EDIT MODE
+            button#btnToggleEditMode Toggle Edit Mode
 
         // /SKILL LIST VIEW WRAPPER
 
@@ -41,13 +41,14 @@ block content
             h2 Enter a New Productivity Session
             #addSession
                 fieldset
-                    label(for="primarySkill") What was the primary skill focused on?
+                    div
+                        label(for="primarySkill") What was the primary skill focused on?
                         select#selectPrimaryAssociatedSkill(name="primarySkill")
-                    br
-                    label(for="duration") How long was the session (round to nearest quarter hour)?
+                    div
+                        label(for="duration") How long was the session (round to nearest quarter hour)?
                         input#inputSessionDuration(name="duration", type="number", min="0", max="24", value="0", step=".25")
-                    br
-                    label(for="sessionDate") Date of the Session:
+                    div
+                        label(for="sessionDate") Date of the Session:
                         input#inputSessionDate(name="sessionDate", type="date")
                     div.buttonRow
                         button#btnCancelAddSession Cancel
