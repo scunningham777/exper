@@ -15,7 +15,7 @@ var router = express.Router();
 /*
  * GET all skills. 
  */
-router.get('/', function(req, res) {
+/*router.get('/', function(req, res) {
     var db = req.db;
     db.collection('usercollection').findById('544d8ff19216375f8f23fade', function (err, result) {
 //    db.collection('usercollection').findById('544d92099216375f8f23fae0', function (err, result) {    
@@ -41,13 +41,13 @@ router.get('/', function(req, res) {
         }
         res.json(convertedResults);
     });
-});
+});*/
 
 /*
  * POST to add new skill 
  */
 //TODO: only push if a skill with the same name does not exist already!
-router.post('/addskill', function(req, res) {
+/*router.post('/addskill', function(req, res) {
     var db = req.db;
     db.collection('usercollection').updateById('544d8ff19216375f8f23fade', {'$push': {skills: req.body}}, function(err, result){
 //    db.collection('usercollection').updateById('544d92099216375f8f23fae0', {'$push': {skills: req.body}}, function(err, result){
@@ -56,7 +56,7 @@ router.post('/addskill', function(req, res) {
         );
     });
 });
-
+*/
 
 
 
@@ -67,18 +67,29 @@ router.post('/addskill', function(req, res) {
 /*
  * GET all skills. **SEPARATE DOCUMENT FOR SKILLS**
  */
-/*router.get('/', function(req, res) {
+router.get('/', function(req, res) {
+    var db = req.db;
+    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade'}).toArray(function (err, items) {
+        res.json(items);
+    });
+});
+
+
+/*
+ * GET all skills with durations added. **RELATIONAL**
+ */
+router.get('/listwithduration', function(req, res) {
     var db = req.db;
     db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade'}).toArray(function (err, items) {
         var convertedResults = [];
         var currentSkill;
         var skillDuration;
 
-        if (items.skills != null && items.skills.length > 0){
-            items.skills.forEach(function(value, index, array) {
-                currentSkill = {'name': value.name};
+        if (items != null && items.length > 0){
+            items.forEach(function(value, index, array) {
+                currentSkill = value;
                 skillDuration = 0;
-                if (value.sessions != null && value.sessions.length > 0){
+/*                if (value.sessions != null && value.sessions.length > 0){
                     value.sessions.forEach(function(value, index, array) {
                         skillDuration += parseFloat(value.duration);
                     })
@@ -87,24 +98,39 @@ router.post('/addskill', function(req, res) {
                 else {
                     currentSkill.totalDuration = 0;
                 }
-                convertedResults.push(currentSkill);
+*/
+                console.info(db.toObjectID(value._id));
+                console.info(value._id);
+                console.info(value._id.toString());
+                db.collection('sessioncollection').find({'skill_id': value._id.toString()}).toArray(function (err, results) {
+                    if (err) {console.info(err)};
+                    console.info(results);
+                    if (results != null && results.length > 0) {
+                        results.forEach(function(value, index, array) {
+                            skillDuration += parseFloat(value.duration);
+                        })
+                        console.info(skillDuration);
+                    }
+                    currentSkill.totalDuration = skillDuration;
+                    convertedResults.push(currentSkill);
+                    res.json(convertedResults);
+                });
             })
         }
-        res.json(convertedResults);
     });
 });
-*/
+
 
 /*
  * POST to add new skill **SEPARATE DOCUMENT FOR SKILLS**
  */
-/*router.post('/addskill', function(req, res) {
+router.post('/addskill', function(req, res) {
 	var db = req.db;
     var requestedSkillAlreadyExists = false;
     db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade', name:req.body.name}, function(err, result) {
         if (result.length > 0) {
             requestedSkillAlreadyExists = true;
-            res.send( msg: 'Skill with same name already exists');
+            res.send( {msg: 'Skill with same name already exists'});
         }
     })
     if (requestedSkillAlreadyExists == false){
@@ -115,7 +141,7 @@ router.post('/addskill', function(req, res) {
         });
     }
 })
-*/
+
 
 /*
  * PUT to update existing skills

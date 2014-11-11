@@ -10,7 +10,7 @@
 /*
  * GET all sessions for the selected skill
  */
-exports.list = function(req, res) {
+/*exports.listForSkill = function(req, res) {
 	var db = req.db;
 	var skillName = req.params.skillname;
 
@@ -18,12 +18,12 @@ exports.list = function(req, res) {
 //    db.collection('usercollection').findOne({_id: db.toObjectID('544d92099216375f8f23fae0'), 'skills.name': skillName}, {'skills.$': 1}, function(err, result) {
 		res.json(result.skills[0].sessions);
 	});
-};
+};*/
 
 /*
  * POST to add new session 
  */
-exports.add = function(req, res) {
+/*exports.add = function(req, res) {
     var db = req.db;
     var skillName = req.params.skillname;
     var userId = '544d8ff19216375f8f23fade';
@@ -32,5 +32,37 @@ exports.add = function(req, res) {
         res.send(
             (err === null) ? { msg: '' } : { msg: err }
         );
+    });
+};*/
+
+
+
+
+/*
+ * GET all sessions for the selected skill **SEPARATE DOCUMENT FOR SKILLS**
+ */
+exports.listForSkill = function(req, res) {
+    var db = req.db;
+    var skill_id = req.params.skill_id;
+
+    db.collection('sessioncollection').find({'skill_id': skill_id}).toArray(function(err, result) {
+        res.json(result);
+    });
+};
+
+/*
+ * POST to add new session **SEPARATE DOCUMENT FOR SKILLS**
+ */
+exports.add = function(req, res) {
+    var db = req.db;
+    var newSession = req.body;
+    console.info(newSession);
+    newSession.skill_id = req.params.skill_id;
+    newSession.user_id = '544d8ff19216375f8f23fade';
+    console.info(newSession);
+    db.collection('sessioncollection').insert(newSession, function(err, result) {
+            res.send(
+                (err === null) ? { msg: '' } : { msg: err }
+            );
     });
 };

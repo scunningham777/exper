@@ -37,8 +37,10 @@ app.use(function(req,res,next){
 app.use('/', routes);
 app.use('/users', users);
 app.use('/skills', skills);
-app.get('/skills/:skillname/sessions', sessions.list);
-app.post('/skills/:skillname/sessions/addsession', sessions.add);
+//app.get('/skills/:skillname/sessions', sessions.listForSkill);
+//app.post('/skills/:skillname/sessions/addsession', sessions.add);
+app.get('/skills/:skill_id/sessions', sessions.listForSkill);
+app.post('/skills/:skill_id/sessions/addsession', sessions.add);
 
 
 

@@ -44,14 +44,14 @@ function populateSkillTable() {
     var tableContent = '';
 
     // jQuery AJAX call for JSON
-    $.getJSON( '/skills', function( data ) {
+    $.getJSON( '/skills/listwithduration', function( data ) {
 
         if (data.length > 0){
             // For each item in our JSON, add a table row and cells to the content string
             $.each(data, function(){
                 tableContent += '<tr class="skillListRow">';
-                tableContent += '<td><a href="" class="linkaddtoskill" rel="' + this.name + '" title="Add Session">' + this.name + '</a></td>';
-                tableContent += '<td><a href="" class="linkexpandskill" rel="' + this.name + '" title="Show Session List">' + this.totalDuration + '</a></td>';
+                tableContent += '<td><a href="" class="linkaddtoskill" rel="' + this._id + '" title="Add Session">' + this.name + '</a></td>';
+                tableContent += '<td><a href="" class="linkexpandskill" rel="' + this._id + '" title="Show Session List">' + this.totalDuration + '</a></td>';
     //            tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">delete</a></td>';
                 tableContent += '</tr>';
             });
@@ -115,20 +115,16 @@ function openNewSessionView(event) {
     $('#inputSessionDuration').val(0);
     var now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-//    console.dir($('#inputSessionDate'));
-//    console.dir(document.getElementById('inputSessionDate'));
-//    document.getElementById('inputSessionDate').valueAsDate = now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     var sessionDateField = $('#inputSessionDate').get(0)
-//    console.dir(sessionDateField);
     sessionDateField.valueAsDate = now;
     $('#addSessionView').show();
 
     // Empty content string
     var formContent = '';
 
-    var selectedSkill = '';
+    var selectedSkillId = '';
     if (event !== null && $(this).attr('rel') !== null) {
-        selectedSkill = $(this).attr('rel');
+        selectedSkillId = $(this).attr('rel');
     }
 
     // jQuery AJAX call for JSON
@@ -139,8 +135,8 @@ function openNewSessionView(event) {
         }
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data, function(){
-            formContent += '<option value="' + this.name + '"';
-            if (selectedSkill == this.name) {
+            formContent += '<option value="' + this._id + '"';
+            if (selectedSkillId == this._id) {
                 formContent += ' selected';
             }
             formContent += '>' + this.name + '</option>'
