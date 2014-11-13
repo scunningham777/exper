@@ -64,19 +64,20 @@ router.get('/listwithduration', function(req, res) {
 router.post('/addskill', function(req, res) {
 	var db = req.db;
     var requestedSkillAlreadyExists = false;
-    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade', name:req.body.name}, function(err, result) {
+    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade', name:req.body.name}).toArray(function(err, result) {
         if (result.length > 0) {
             requestedSkillAlreadyExists = true;
+            console.info('Skill with same name already exists');
             res.send( {msg: 'Skill with same name already exists'});
         }
+        else {
+            db.collection('skillcollection').insert({user_id:'544d8ff19216375f8f23fade', name:req.body.name}, function(err, result){
+                res.send(
+                    (err === null) ? { msg: '' } : { msg: err }
+                );
+            });            
+        }
     })
-    if (requestedSkillAlreadyExists == false){
-        db.collection('skillcollection').insert({user_id:'544d8ff19216375f8f23fade', name:req.body.name}, function(err, result){
-            res.send(
-                (err === null) ? { msg: '' } : { msg: err }
-            );
-        });
-    }
 })
 
 

@@ -8,8 +8,14 @@ $(document).ready(function() {
     $('#btnAddSkill').on('click', addSkill);
 
     //Edit Skills button click?
-    //Edit specific skill button click
+    //Edit skill button click
+    $('.editable.editSkill').on('click', editSkill);
     //Delete skill button click
+    $('.deletable.deleteSkill').on('click', deleteSkill);
+    //Edit session button click
+    $('.editable.editSession').on('click', editSession);
+    //Delete session button click
+    $('.deletable.deleteSession').on('click', deleteSession);
 
     //Click on a skill name to add new session for that skill
     $('#skillList table tbody').on('click', 'td a.linkaddtoskill', openNewSessionView);
@@ -241,6 +247,21 @@ function showSessionListForSkill(event) {
     }
 }
 
+function editSkill(event){
+
+}
+
+function deleteSkill(event){
+
+}
+function editSession(event){
+
+}
+
+function deleteSession(event){
+
+}
+
 function toggleEditMode() {
     if (superNamespaceSafeProductivityTrackerEditModeIsActivate == false) {
         switchEditModeOn();
@@ -251,11 +272,15 @@ function toggleEditMode() {
 }
 
 function switchEditModeOn() {
-
+    $('.editable').show();
+    $('.deletable').show();
+    superNamespaceSafeProductivityTrackerEditModeIsActivate = true;
 }
 
 function switchEditModeOff() {
-
+    $('.editable').hide();
+    $('.deletable').hide();
+    superNamespaceSafeProductivityTrackerEditModeIsActivate = false;
 }
 
 
