@@ -82,39 +82,33 @@ router.get('/listwithduration', function(req, res) {
     var db = req.db;
     db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade'}).toArray(function (err, items) {
         var convertedResults = [];
-        var currentSkill;
+//        var currentSkill;
         var skillDuration;
 
         if (items != null && items.length > 0){
             items.forEach(function(value, index, array) {
-                currentSkill = value;
+                var currentSkill = value;
                 skillDuration = 0;
-/*                if (value.sessions != null && value.sessions.length > 0){
-                    value.sessions.forEach(function(value, index, array) {
-                        skillDuration += parseFloat(value.duration);
-                    })
-                    currentSkill.totalDuration = skillDuration;
-                }
-                else {
-                    currentSkill.totalDuration = 0;
-                }
-*/
-                console.info(db.toObjectID(value._id));
-                console.info(value._id);
-                console.info(value._id.toString());
-                db.collection('sessioncollection').find({'skill_id': value._id.toString()}).toArray(function (err, results) {
-                    if (err) {console.info(err)};
-                    console.info(results);
-                    if (results != null && results.length > 0) {
-                        results.forEach(function(value, index, array) {
-                            skillDuration += parseFloat(value.duration);
-                        })
-                        console.info(skillDuration);
-                    }
-                    currentSkill.totalDuration = skillDuration;
-                    convertedResults.push(currentSkill);
-                    res.json(convertedResults);
-                });
+
+                db.collection('sessioncollection').aggregate([
+                        {$match:{'skill_id': value._id.toString()}},
+                        {$group:{_id: '$skill_id', 'totalDuration': {$sum: '$duration'}}}
+                    ], function(err, result) {
+                        if (err) {console.info(err)};
+
+                        if (result != null && result.length > 0 && result[0].totalDuration != null) {
+                            currentSkill.totalDuration = result[0].totalDuration;
+                        }
+                        else {
+                            currentSkill.totalDuration = 0;
+                        }
+
+                        convertedResults.push(currentSkill);
+                        
+                        if(index == items.length-1){
+                            res.json(convertedResults);
+                        }
+                    });
             })
         }
     });

@@ -216,7 +216,7 @@ function showSessionListForSkill(event) {
         $.getJSON('skills/' + $(clickedElement).attr('rel') + '/sessions')
             .done(function (data) {
                 if (data.length <= 0) {
-                    sessionListContent += '<tr><td colspan=2>No Sessions for this Skill yet!</td><tr>';
+                    sessionListContent += '<tr class="sessionListWrapper"><td colspan=2>No Sessions for this Skill yet!</td></tr>';
                 }
                 else {
                     sessionListContent += '<tr class="sessionListWrapper"><td colspan=2>';
@@ -236,7 +236,7 @@ function showSessionListForSkill(event) {
             })
             .fail(function (jqxhr, textStatus, error) {
                 var err = textStatus + ", " + error;
-                sessionListContent += ("<tr><td colspan=2>Request Failed: " + err + "</td><tr>");
+                sessionListContent += ('<tr class="sessionListWrapper"><td colspan=2>Request Failed: ' + err + '</td><tr>');
             });
     }
 }

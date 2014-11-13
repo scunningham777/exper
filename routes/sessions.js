@@ -59,6 +59,7 @@ exports.add = function(req, res) {
     console.info(newSession);
     newSession.skill_id = req.params.skill_id;
     newSession.user_id = '544d8ff19216375f8f23fade';
+    newSession.duration = parseFloat(req.body.duration);
     console.info(newSession);
     db.collection('sessioncollection').insert(newSession, function(err, result) {
             res.send(
