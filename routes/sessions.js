@@ -56,14 +56,23 @@ exports.listForSkill = function(req, res) {
 exports.add = function(req, res) {
     var db = req.db;
     var newSession = req.body;
-    console.info(newSession);
     newSession.skill_id = req.params.skill_id;
     newSession.user_id = '544d8ff19216375f8f23fade';
     newSession.duration = parseFloat(req.body.duration);
-    console.info(newSession);
     db.collection('sessioncollection').insert(newSession, function(err, result) {
             res.send(
                 (err === null) ? { msg: '' } : { msg: err }
             );
     });
 };
+
+
+exports.deleteSession = function(req, res) {
+    var db = req.db;
+    db.collection('sessioncollection').removeById(req.params.session_id, function(err, result) {
+        res.send(
+            (result === 1) ? {msg: ''} : {msg: 'error: ' + err}
+        );
+    });
+
+}

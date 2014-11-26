@@ -1,4 +1,4 @@
-var superNamespaceSafeProductivityTrackerEditModeIsActivate = false;
+var superNamespaceSafeProductivityTrackerEditModeIsActive = false;
 
 
 // DOM Ready =============================================================
@@ -9,21 +9,21 @@ $(document).ready(function() {
 
     //Edit Skills button click?
     //Edit skill button click
-    $('.editable.editSkill').on('click', editSkill);
+    $('#skillList table tbody').on('click', '.editable .editskill', editSkill);
     //Delete skill button click
-    $('.deletable.deleteSkill').on('click', deleteSkill);
+    $('#skillList table tbody').on('click', '.deletable a.deleteskill', deleteSkill);
     //Edit session button click
-    $('.editable.editSession').on('click', editSession);
+    $('#skillList table tbody').on('click', '.editable a.editsession', editSession);
     //Delete session button click
-    $('.deletable.deleteSession').on('click', deleteSession);
+    $('#skillList table tbody').on('click', '.deletable a.deletesession', deleteSession);
 
     //Click on a skill name to add new session for that skill
-    $('#skillList table tbody').on('click', 'td a.linkaddtoskill', openNewSessionView);
+    $('#skillList table tbody').on('click', 'td a.linkaddtoskill', handleNewSessionEvent);
     //Click on a total duration value to vew session list for that skill
     $('#skillList table tbody').on('click', 'td a.linkexpandskill', showSessionListForSkill);
 
     //Click to open new session form
-    $('#btnNewSession').on('click', openNewSessionView);
+    $('#btnNewSession').on('click', handleNewSessionEvent);
 
     //Toggle Edit Mode
     $('#btnToggleEditMode').on('click', toggleEditMode);
@@ -33,7 +33,7 @@ $(document).ready(function() {
     $('#btnSubmitAddSession').on('click', submitNewSession);
 
     // default to add new session view, which will redirect to skills list if no skills exist for user
-    openNewSessionView();
+    handleNewSessionEvent();
 //    populateSkillTable();
 
 });
@@ -56,6 +56,7 @@ function populateSkillTable() {
             // For each item in our JSON, add a table row and cells to the content string
             $.each(data, function(){
                 tableContent += '<tr class="skillListRow">';
+                tableContent += '<td class="deletable" style="display:none"><a href="" class="deleteskill" rel="' + this._id + '" title="Delete Skill">X</a></td>';
                 tableContent += '<td><a href="" class="linkaddtoskill" rel="' + this._id + '" title="Add Session">' + this.name + '</a></td>';
                 tableContent += '<td><a href="" class="linkexpandskill" rel="' + this._id + '" title="Show Session List">' + this.totalDuration + '</a></td>';
     //            tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">delete</a></td>';
@@ -112,12 +113,12 @@ function addSkill(event) {
     }
 }
 
-function openNewSessionView(event) {
+function handleNewSessionEvent(event) {
     if (event != null) {
         event.preventDefault();
     }
 
-    hideAllViews();
+/*    hideAllViews();
     $('#inputSessionDuration').val(0);
     var now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -127,11 +128,70 @@ function openNewSessionView(event) {
 
     // Empty content string
     var formContent = '';
-
-    var selectedSkillId = '';
+*/
+    var sessionParams = {};
     if (event !== null && $(this).attr('rel') !== null) {
-        selectedSkillId = $(this).attr('rel');
+        sessionParams.skillId = $(this).attr('rel');
     }
+
+    openSessionView(sessionParams);
+
+    // jQuery AJAX call for JSON
+/*    $.getJSON( '/skills', function( data ) {
+        if (data == null || data.length <= 0) {
+            populateSkillTable();
+            return;
+        }
+        // For each item in our JSON, add a table row and cells to the content string
+        $.each(data, function(){
+            formContent += '<option value="' + this._id + '"';
+            if (selectedSkillId == this._id) {
+                formContent += ' selected';
+            }
+            formContent += '>' + this.name + '</option>'
+        });
+
+        // Inject the whole content string into our existing HTML table
+        $('#selectPrimaryAssociatedSkill').html(formContent);
+    });
+*/
+
+}
+
+function openSessionView(sessionParams) {
+    //hide everything
+    hideAllViews();
+
+    //reset blank form
+    $('#sessionIdField').val(0);
+    $('#inputSessionDuration').val(0);
+    var now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    var sessionDateField = $('#inputSessionDate').get(0)
+    sessionDateField.valueAsDate = now;
+
+    //insert values if passed in sessionParams
+    if (sessionParams.sessionId !== null) {
+        $('#sessionIdField').val(sessionParams.sessionId);
+    }
+    if (sessionParams.sessionDuration !== null) {
+        $('#inputSessionDuration').val(sessionParams.sessionDuration);
+    }
+    if (sessionParams.sessionDate !== null) {
+        now = new Date(sessionParams.sessionDate);
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        sessionDateField.valueAsDate = now;
+    }
+    //this one can only really be set during the ajax callback below
+    var selectedSkillId = ''; 
+    if (sessionParams.skillId != null) {
+        selectedSkillId = sessionParams.skillId;
+    }
+
+    //**********************
+    //Populate skill options
+    //**********************
+    var formContent = '';
 
     // jQuery AJAX call for JSON
     $.getJSON( '/skills', function( data ) {
@@ -150,7 +210,10 @@ function openNewSessionView(event) {
 
         // Inject the whole content string into our existing HTML table
         $('#selectPrimaryAssociatedSkill').html(formContent);
-    });
+    });    
+
+    //display the session view
+    $('#addSessionView').show();
 
 }
 
@@ -168,7 +231,14 @@ function submitNewSession(event) {
                 'date': adjustedSessionDate
             };
 
-            var urlString = '/skills/' + $('#selectPrimaryAssociatedSkill').val() + '/sessions/addsession';
+            var urlString = '';
+            if ($('#sessionIdField').val() > '0') {
+                urlString = '/sessions/editsession/' + $('#sessionIdField').val();
+                newSession.skillId = $('#selectPrimaryAssociatedSkill').val();
+            }
+            else {
+                urlString = '/skills/' + $('#selectPrimaryAssociatedSkill').val() + '/sessions/addsession';
+            }
 
             //use AJAX to post the object to our addSkill service
             $.ajax({
@@ -201,7 +271,9 @@ function submitNewSession(event) {
 }
 
 function showSessionListForSkill(event) {
-    event.preventDefault();
+    if(event != null) {
+        event.preventDefault();
+    }
 
     var listAlreadyVisible = false;
 
@@ -209,61 +281,138 @@ function showSessionListForSkill(event) {
         listAlreadyVisible = true;
     }
 
-
     //hide any previously opened session lists
     $('.sessionListWrapper').remove();
 
-
-    var sessionListContent = '';
-
-    var clickedElement = this;
-
-    if (listAlreadyVisible == false && event != null && $(clickedElement).attr('rel') != null) {
-        $.getJSON('skills/' + $(clickedElement).attr('rel') + '/sessions')
-            .done(function (data) {
-                if (data.length <= 0) {
-                    sessionListContent += '<tr class="sessionListWrapper"><td colspan=2>No Sessions for this Skill yet!</td></tr>';
-                }
-                else {
-                    sessionListContent += '<tr class="sessionListWrapper"><td colspan=2>';
-                    sessionListContent += '<table class="inner">';
-                    sessionListContent += '<thead><tr><th>Date</th><th>Duration</th></tr></thead>';
-                    sessionListContent += '<tbody>';
-                    $.each(data, function() {
-                        var prettyDate = new Date(this.date).toDateString();
-                        sessionListContent += '<tr><td>' + prettyDate + '</td><td>' + this.duration + '</td></tr>';
-                    });
-                    sessionListContent += '</tbody></table>';
-                }
-
-                sessionListContent += '</td></tr>';
-
-                $(clickedElement).parents('tr.skillListRow').after(sessionListContent);
-            })
-            .fail(function (jqxhr, textStatus, error) {
-                var err = textStatus + ", " + error;
-                sessionListContent += ('<tr class="sessionListWrapper"><td colspan=2>Request Failed: ' + err + '</td><tr>');
-            });
+    if (listAlreadyVisible == false && $(this).attr('rel') != null) {
+        generateAndAttachSessionListForSkill($(this).attr('rel'), $(this).parents('tr.skillListRow'));
     }
 }
 
+function generateAndAttachSessionListForSkill(selectedSkillId, parentElement) {
+    //hide any previously opened session lists
+    $('.sessionListWrapper').remove();
+
+    $.getJSON('skills/' + selectedSkillId + '/sessions')
+        .done(function (data) {
+            var sessionListContent = '';
+            if (data.length <= 0) {
+                sessionListContent += '<tr class="sessionListWrapper"><td colspan=3>No Sessions for this Skill yet!</td></tr>';
+            }
+            else {
+                var editModeStyleString = '';
+                if (superNamespaceSafeProductivityTrackerEditModeIsActive == false) {
+                    editModeStyleString = 'style="display:none"';
+                }
+                sessionListContent += '<tr class="sessionListWrapper"><td colspan=3>';
+                sessionListContent += '<table class="inner">';
+                sessionListContent += '<thead><tr><th class="deletable" ' + editModeStyleString + '>Del</th><th class="editable" ' + editModeStyleString + '>Edit</th><th>Date</th><th>Duration</th></tr></thead>';
+                sessionListContent += '<tbody>';
+                $.each(data, function() {
+                    var prettyDate = new Date(this.date).toDateString();
+                    sessionListContent += '<tr>';
+                    sessionListContent += '<td class="deletable" ' + editModeStyleString + '><a href="" class="deletesession" rel="' + this._id + '" title="Delete Session">X</a></td>';
+                    sessionListContent += '<td class="editable" ' + editModeStyleString + '><a href="" class="editsession" rel="' + this._id + '" title="Edit Session">E</a></td>';
+                    sessionListContent += '<td>' + prettyDate + '</td><td>' + this.duration + '</td></tr>';
+                });
+                sessionListContent += '</tbody></table>';
+            }
+
+            sessionListContent += '</td></tr>';
+
+            parentElement.after(sessionListContent);
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = textStatus + ", " + error;
+            console.log('Request Failed: ' + err);
+        });
+
+}
+
 function editSkill(event){
+    if (event != null) {
+        event.preventDefault();
+    }
+
+    var selectedSkillId = '';
+    if (event !== null && $(this).attr('rel') !== null) {
+        selectedSkillId = $(this).attr('rel');
+    }
 
 }
 
 function deleteSkill(event){
+    if (event != null) {
+        event.preventDefault();
+    }
 
+    var selectedSkillId = '';
+    if (event !== null && $(this).attr('rel') !== null) {
+        selectedSkillId = $(this).attr('rel');
+    }
+
+    if (confirm('Are you sure you want to delete this skill?')) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/skills/deleteskill/' + selectedSkillId
+        }).done(function(response) {
+            if (response.msg === '') {
+                //update the table
+                populateSkillTable();
+            }
+            else {
+                Window.alert('Error: ' + response.msg);
+            }
+        })
+    }
+    else {
+        return false;
+    }
 }
+
 function editSession(event){
+    if (event != null) {
+        event.preventDefault();
+    }
 
 }
 
 function deleteSession(event){
+    if (event != null) {
+        event.preventDefault();
+    }
+
+    var selectedSessionId = '';
+    if (event !== null && $(this).attr('rel') !== null) {
+        selectedSessionId = $(this).attr('rel');
+        if (confirm('Are you sure you want to delete this session?')) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/sessions/deletesession/' + selectedSessionId
+            }).done(function(response) {
+                if (response.msg === '') {
+                    //update the table
+                    //need to update the full skill table to make sure duration totals get updated
+                    populateSkillTable();
+//                    generateAndAttachSessionListForSkill(selectedSessionId, $(this).parents('tr.sessionListWrapper').prev());
+                }
+                else {
+                    Window.alert('Error: ' + response.msg);
+                }
+            })
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
 
 }
 
 function toggleEditMode() {
-    if (superNamespaceSafeProductivityTrackerEditModeIsActivate == false) {
+    if (superNamespaceSafeProductivityTrackerEditModeIsActive == false) {
         switchEditModeOn();
     }
     else {
@@ -274,13 +423,15 @@ function toggleEditMode() {
 function switchEditModeOn() {
     $('.editable').show();
     $('.deletable').show();
-    superNamespaceSafeProductivityTrackerEditModeIsActivate = true;
+    $('.noeditmode').hide();
+    superNamespaceSafeProductivityTrackerEditModeIsActive = true;
 }
 
 function switchEditModeOff() {
     $('.editable').hide();
     $('.deletable').hide();
-    superNamespaceSafeProductivityTrackerEditModeIsActivate = false;
+    $('.noeditmode').show();
+    superNamespaceSafeProductivityTrackerEditModeIsActive = false;
 }
 
 

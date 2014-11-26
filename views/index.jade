@@ -15,11 +15,12 @@ block content
             #skillList
                 table
                     thead
+                        th(class="deletable", style="display:none") Del
                         th Skill Name
                         th Hours Invested
                     tbody
                     tfoot
-                        tr#addSkill
+                        tr#addSkill(class="noeditmode")
                             td 
                                 input#inputSkillName(type="text", placeholder="New Skill name")
                             td 
@@ -41,6 +42,8 @@ block content
             h2 Enter a New Productivity Session
             #addSession
                 fieldset
+                    div(style="display:none")
+                        input(id="sessionIdField", value="0")
                     div
                         label(for="primarySkill") What was the primary skill focused on?
                         select#selectPrimaryAssociatedSkill(name="primarySkill")
