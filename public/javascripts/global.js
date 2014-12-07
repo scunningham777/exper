@@ -53,6 +53,12 @@ function populateSkillTable() {
     $.getJSON( '/skills/listwithduration', function( data ) {
 
         if (data.length > 0){
+            //first let's sort the data
+            function skillListSort(a, b) {
+                return a.name.toUpperCase().localeCompare(b.name.toUpperCase());
+            }
+            data.sort(skillListSort);
+
             // For each item in our JSON, add a table row and cells to the content string
             $.each(data, function(){
                 tableContent += '<tr class="skillListRow">';
@@ -162,22 +168,34 @@ function openSessionView(sessionParams) {
     //hide everything
     hideAllViews();
 
-    //reset blank form
-    $('#sessionIdField').val(0);
+    //set header - add if no session id, edit if session id given
+    //TODO - DOESN'T WORK, clearly .val() is not the function I want to call here
+    var headerString = '';
+    if (sessionParams.sessionId != null) {
+        headerString = 'Edit the following Session details';
+    }
+    else {
+        headerString = 'Enter a New Productivity Session';
+    }
+    $('#headerSessionView').text(headerString);
+
+    //reset blank form    
+    $('#sessionIdField').val("0");
     $('#inputSessionDuration').val(0);
     var now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     var sessionDateField = $('#inputSessionDate').get(0)
     sessionDateField.valueAsDate = now;
 
+ 
     //insert values if passed in sessionParams
-    if (sessionParams.sessionId !== null) {
+    if (sessionParams.sessionId != null) {
         $('#sessionIdField').val(sessionParams.sessionId);
     }
-    if (sessionParams.sessionDuration !== null) {
+    if (sessionParams.sessionDuration != null) {
         $('#inputSessionDuration').val(sessionParams.sessionDuration);
     }
-    if (sessionParams.sessionDate !== null) {
+    if (sessionParams.sessionDate != null) {
         now = new Date(sessionParams.sessionDate);
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
         sessionDateField.valueAsDate = now;
@@ -295,6 +313,15 @@ function generateAndAttachSessionListForSkill(selectedSkillId, parentElement) {
 
     $.getJSON('skills/' + selectedSkillId + '/sessions')
         .done(function (data) {
+            //first let's sort the sessions by date
+            function sessionListSort(a, b) {
+                var aDate = new Date(a.date);
+                var bDate = new Date(b.date);
+
+                return aDate.getTime() - bDate.getTime();
+            }
+            data.sort(sessionListSort);
+
             var sessionListContent = '';
             if (data.length <= 0) {
                 sessionListContent += '<tr class="sessionListWrapper"><td colspan=3>No Sessions for this Skill yet!</td></tr>';
@@ -374,6 +401,33 @@ function editSession(event){
     if (event != null) {
         event.preventDefault();
     }
+
+    var selectedSessionId = '';
+    if (event !== null && $(this).attr('rel') !== null) {
+        selectedSessionId = $(this).attr('rel');
+
+        $.getJSON('/sessions/' + selectedSessionId, function(data) {
+            if (data != null) {
+                //create session parameters object to pass to openSessionView
+                var existingSessionParams = {};
+                if (data._id != null) {
+                    existingSessionParams.sessionId = data._id;
+                }
+                if (data.duration != null) {
+                    existingSessionParams.sessionDuration = data.duration;
+                }
+                if (data.date != null) {
+                    existingSessionParams.sessionDate = data.date;
+                }
+                if (data.skill_id != null) {
+                    existingSessionParams.skillId = data.skill_id;
+                }
+
+                openSessionView(existingSessionParams);
+            }
+       });
+    }
+
 
 }
 

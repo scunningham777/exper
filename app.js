@@ -39,7 +39,9 @@ app.use('/users', users);
 app.use('/skills', skills);
 app.get('/skills/:skill_id/sessions', sessions.listForSkill);
 app.post('/skills/:skill_id/sessions/addsession', sessions.add);
+app.get('/sessions/:session_id', sessions.getById);
 app.delete('/sessions/deletesession/:session_id', sessions.deleteSession);
+app.post('/sessions/editsession/:session_id', sessions.editSession);
 
 
 
