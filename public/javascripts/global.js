@@ -32,9 +32,10 @@ $(document).ready(function() {
     $('#btnCancelAddSession').on('click', populateSkillTable);
     $('#btnSubmitAddSession').on('click', submitNewSession);
 
+    $('#btnLogin').on('click', handleNewSessionEvent);
+
     // default to add new session view, which will redirect to skills list if no skills exist for user
-    handleNewSessionEvent();
-//    populateSkillTable();
+//    handleNewSessionEvent();
 
 });
 
@@ -519,6 +520,7 @@ function switchEditModeOff() {
 
 
 function hideAllViews() {
+    $('#loginView').hide();
     $('#skillListView').hide();
     $('#addSessionView').hide();
     switchEditModeOff();
