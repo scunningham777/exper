@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     //Edit Skills button click?
     //Edit skill button click
-    $('#skillList table tbody').on('click', '.editable .editskill', editSkill);
+    $('#skillList table tbody').on('click', '.editable.editskill', editSkill);
     //Delete skill button click
     $('#skillList table tbody').on('click', '.deletable a.deleteskill', deleteSkill);
     //Edit session button click
@@ -63,9 +63,11 @@ function populateSkillTable() {
             $.each(data, function(){
                 tableContent += '<tr class="skillListRow">';
                 tableContent += '<td class="deletable" style="display:none"><a href="" class="deleteskill" rel="' + this._id + '" title="Delete Skill">X</a></td>';
-                tableContent += '<td><a href="" class="linkaddtoskill" rel="' + this._id + '" title="Add Session">' + this.name + '</a></td>';
+                tableContent += '<td>';
+                tableContent += '<a href="" class="linkaddtoskill noeditmode" rel="' + this._id + '" title="Add Session">' + this.name + '</a>';
+                tableContent += '<input type="text" name="skillName" class="editable" style="display:none" value="' + this.name + '" /><button style="display:none" class="editable editskill">Update</button>'
+                tableContent += '</td>'
                 tableContent += '<td><a href="" class="linkexpandskill" rel="' + this._id + '" title="Show Session List">' + this.totalDuration + '</a></td>';
-    //            tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">delete</a></td>';
                 tableContent += '</tr>';
             });
         }
@@ -362,8 +364,34 @@ function editSkill(event){
     }
 
     var selectedSkillId = '';
-    if (event !== null && $(this).attr('rel') !== null) {
-        selectedSkillId = $(this).attr('rel');
+    if (event !== null && $(this).prev() != [] && $(this).prev().prev() != [] && $(this).prev().prev().attr('rel') != null) {
+        selectedSkillId = $(this).prev().prev().attr('rel');
+    }
+
+    var updatedSkill = {}
+    if (event != null && $(this).prev() != [] && $(this).prev().val() != '') {
+        updatedSkill.name = $(this).prev().val();
+    }
+
+    if (selectedSkillId !== '' && updatedSkill.name != null) {
+        if (confirm('Are you sure you want to edit this skill?')) {
+            $.ajax({
+                type: 'POST',
+                url: '/skills/editskill/' + selectedSkillId,
+                data: updatedSkill
+            }).done(function(response) {
+                if (response.msg === '') {
+                    //update the table
+                    populateSkillTable();
+                }
+                else {
+                    Window.alert('Error: ' + response.msg);
+                }
+            })
+        }
+        else {
+            return false;
+        }      
     }
 
 }

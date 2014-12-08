@@ -82,9 +82,9 @@ router.post('/addskill', function(req, res) {
 
 
 /*
- * PUT to update existing skills
+ * POST to update existing skills
  */
-router.put('/editskill/:id', function(req, res) {
+router.post('/editskill/:id', function(req, res) {
     var db = req.db;
     var skillToUpdate = req.params.id;
     db.collection('skillcollection').updateById(skillToUpdate, {$set: {name: req.body.name}}, function(err, result) {
