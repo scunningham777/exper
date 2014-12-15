@@ -3,22 +3,12 @@ var async = require('async');
 
 var router = express.Router();
 
-/***********************************
- * FOR NOW, ALL DB OPERATIONS
- * SHOULD USE THE FOLLOWING USER ID:
- * 544d8ff19216375f8f23fade
- ***********************************/
-
-/*Kind of a hack for now, but redirect any "sessions" calls to the sessions route*/
-//router.all('/skills/:skillname/sessions', sessions);
-
-
 /*
  * GET all skills. 
  */
 router.get('/', function(req, res) {
     var db = req.db;
-    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade'}).toArray(function (err, items) {
+    db.collection('skillcollection').find({user_id:req.session.currentUserId}).toArray(function (err, items) {
         res.json(items);
     });
 });
@@ -29,7 +19,7 @@ router.get('/', function(req, res) {
  */
 router.get('/listwithduration', function(req, res) {
     var db = req.db;
-    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade'}).toArray(function (err, items) {
+    db.collection('skillcollection').find({user_id:req.session.currentUserId}).toArray(function (err, items) {
         if (err) {console.info(err)};
         var convertedResults = [];
 
@@ -64,7 +54,7 @@ router.get('/listwithduration', function(req, res) {
 router.post('/addskill', function(req, res) {
 	var db = req.db;
     var requestedSkillAlreadyExists = false;
-    db.collection('skillcollection').find({user_id:'544d8ff19216375f8f23fade', name:req.body.name}).toArray(function(err, result) {
+    db.collection('skillcollection').find({user_id:req.session.currentUserId, name:req.body.name}).toArray(function(err, result) {
         if (result.length > 0) {
             requestedSkillAlreadyExists = true;
             console.info('Skill with same name already exists');

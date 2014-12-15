@@ -32,7 +32,8 @@ $(document).ready(function() {
     $('#btnCancelAddSession').on('click', populateSkillTable);
     $('#btnSubmitAddSession').on('click', submitNewSession);
 
-    $('#btnLogin').on('click', handleNewSessionEvent);
+    $('#btnLogin').on('click', tryLogin);
+    $('#btnSignup').on('click', trySignup);
 
     // default to add new session view, which will redirect to skills list if no skills exist for user
 //    handleNewSessionEvent();
@@ -41,7 +42,56 @@ $(document).ready(function() {
 
 // Functions =============================================================
 
-// Fill table with data
+function tryLogin(event) {
+    event.preventDefault;
+
+    var triedUsername = $('#inputUserName').val();
+    var triedPassword = $('#inputPassword').val();
+
+    if (triedUsername !== '' && triedPassword !== '') {
+        loginOrSignup(triedUsername, triedPassword, '/users/login')
+    }
+    else {
+        window.alert ("Username and Password must not be blank");
+    }
+
+}
+
+function trySignup(event) {
+    event.preventDefault;
+
+    var triedUsername = $('#inputUserName').val();
+    var triedPassword = $('#inputPassword').val();
+
+    if (triedUsername.length < 3) {
+        window.alert ("Invalid Username: must be greater than 3 characters");
+    }
+    else if (triedPassword.length < 3) {
+        window.alert ("Invalid Password: must be greater than 3 characters");
+    }
+    else {
+        loginOrSignup(triedUsername, triedPassword, '/users/adduniqueuser');
+    }
+
+}
+
+function loginOrSignup(username, password, targetUrl){
+    $.ajax({
+        type: 'POST',
+        data: {'username':username, 'password':password},
+        url: targetUrl,
+        dataType: 'JSON'
+    }).done(function( response ) {
+        if (response.msg != null) {
+            console.log(response.msg);
+            alert(response.msg);
+        }
+        else {
+            handleNewSessionEvent();
+        }
+    });
+}
+
 function populateSkillTable() {
 
     hideAllViews();
@@ -127,44 +177,12 @@ function handleNewSessionEvent(event) {
         event.preventDefault();
     }
 
-/*    hideAllViews();
-    $('#inputSessionDuration').val(0);
-    var now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    var sessionDateField = $('#inputSessionDate').get(0)
-    sessionDateField.valueAsDate = now;
-    $('#addSessionView').show();
-
-    // Empty content string
-    var formContent = '';
-*/
     var sessionParams = {};
     if (event !== null && $(this).attr('rel') !== null) {
         sessionParams.skillId = $(this).attr('rel');
     }
 
     openSessionView(sessionParams);
-
-    // jQuery AJAX call for JSON
-/*    $.getJSON( '/skills', function( data ) {
-        if (data == null || data.length <= 0) {
-            populateSkillTable();
-            return;
-        }
-        // For each item in our JSON, add a table row and cells to the content string
-        $.each(data, function(){
-            formContent += '<option value="' + this._id + '"';
-            if (selectedSkillId == this._id) {
-                formContent += ' selected';
-            }
-            formContent += '>' + this.name + '</option>'
-        });
-
-        // Inject the whole content string into our existing HTML table
-        $('#selectPrimaryAssociatedSkill').html(formContent);
-    });
-*/
-
 }
 
 function openSessionView(sessionParams) {

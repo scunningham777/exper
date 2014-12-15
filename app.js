@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 
 var mongo = require('mongoskin');
@@ -24,7 +25,8 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(cookieParser('w00dh3ng3'));
+app.use(cookieSession({keys: ['key1']}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Make our db accessible to our router
