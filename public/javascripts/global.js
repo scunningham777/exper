@@ -32,17 +32,20 @@ $(document).ready(function() {
     $('#btnCancelAddSession').on('click', populateSkillTable);
     $('#btnSubmitAddSession').on('click', submitNewSession);
 
-    $('#btnLogin').on('click', tryLogin);
-    $('#btnSignup').on('click', trySignup);
+    //Log Out button click
+    $('#btnLogOut').on('click', confirmLogOut);
+
+//    $('#btnLogin').on('click', tryLogin);
+//    $('#btnSignup').on('click', trySignup);
 
     // default to add new session view, which will redirect to skills list if no skills exist for user
-//    handleNewSessionEvent();
+    handleNewSessionEvent();
 
 });
 
 // Functions =============================================================
 
-function tryLogin(event) {
+/*function tryLogin(event) {
     event.preventDefault;
 
     var triedUsername = $('#inputUserName').val();
@@ -91,6 +94,7 @@ function loginOrSignup(username, password, targetUrl){
         }
     });
 }
+*/
 
 function populateSkillTable() {
 
@@ -535,6 +539,13 @@ function switchEditModeOff() {
     superNamespaceSafeProductivityTrackerEditModeIsActive = false;
 }
 
+
+function confirmLogOut() {
+    if (confirm('Are you sure you want to log out?')) {
+//        jQuery.get('/signout');
+        window.location.replace("/signout");
+    }
+}
 
 
 function hideAllViews() {

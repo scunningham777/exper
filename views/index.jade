@@ -1,13 +1,17 @@
 extends layout
 
+
 block content
+  script(src='/lib/jquery-2.1.1.js')
+  script(src='/javascripts/global.js')
+
   h1= title
   p Track your self-development time.
 
     // Wrapper
     #wrapper
         //LOGIN VIEW WRAPPER
-        #loginView
+        //#loginView
             input#inputUserName(type="text", placeholder="Username" style="display:block")
             input#inputPassword(type="password", placeholder="Password" style="display:block")
             button#btnLogin Log In
@@ -67,5 +71,7 @@ block content
             // /ADD NEW SESSION
 
         // /ADD SESSION VIEW WRAPPER
+
+        button#btnLogOut Log Out
 
     // /WRAPPER

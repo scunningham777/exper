@@ -1,8 +1,11 @@
 extends layout
 
 block content
-    h1= title
-    form#formAddUser(name="adduser",method="post",action="/adduser")
-        input#inputUserName(type="text", placeholder="username", name="username")
-        input#inputUserPassword(type="text", placeholder="password", name="password")
+    h2 Enter a Username and Password:
+    form#formAddUser(class='form-signin', action='/signup', method='POST')
+        input#inputUserName(type="text", placeholder="Username", name="username")
+        input#inputUserPassword(type="password", placeholder="Password", name="password")
         button#btnSubmit(type="submit") submit
+    #message
+        if message
+            h1(style="color:red") #{message}
