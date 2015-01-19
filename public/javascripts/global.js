@@ -542,7 +542,6 @@ function switchEditModeOff() {
 
 function confirmLogOut() {
     if (confirm('Are you sure you want to log out?')) {
-//        jQuery.get('/signout');
         window.location.replace("/signout");
     }
 }

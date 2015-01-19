@@ -1,12 +1,14 @@
 var express = require('express');
 var async = require('async');
 
+var isAuthed = require('./isAuthenticated');
+
 var router = express.Router();
 
 /*
  * GET all skills. 
  */
-router.get('/', function(req, res) {
+router.get('/', isAuthed, function(req, res) {
     var db = req.db;
     db.collection('skillcollection').find({user_id:req.session.currentUserId}).toArray(function (err, items) {
         res.json(items);
@@ -17,7 +19,7 @@ router.get('/', function(req, res) {
 /*
  * GET all skills with durations added.
  */
-router.get('/listwithduration', function(req, res) {
+router.get('/listwithduration', isAuthed, function(req, res) {
     var db = req.db;
     db.collection('skillcollection').find({user_id:req.session.currentUserId}).toArray(function (err, items) {
         if (err) {console.info(err)};
@@ -51,7 +53,7 @@ router.get('/listwithduration', function(req, res) {
 /*
  * POST to add new skill 
  */
-router.post('/addskill', function(req, res) {
+router.post('/addskill', isAuthed, function(req, res) {
 	var db = req.db;
     var requestedSkillAlreadyExists = false;
     db.collection('skillcollection').find({user_id:req.session.currentUserId, name:req.body.name}).toArray(function(err, result) {
@@ -61,7 +63,7 @@ router.post('/addskill', function(req, res) {
             res.send( {msg: 'Skill with same name already exists'});
         }
         else {
-            db.collection('skillcollection').insert({user_id:'544d8ff19216375f8f23fade', name:req.body.name}, function(err, result){
+            db.collection('skillcollection').insert({user_id:req.session.currentUserId, name:req.body.name}, function(err, result){
                 res.send(
                     (err === null) ? { msg: '' } : { msg: err }
                 );
@@ -74,7 +76,7 @@ router.post('/addskill', function(req, res) {
 /*
  * POST to update existing skills
  */
-router.post('/editskill/:id', function(req, res) {
+router.post('/editskill/:id', isAuthed, function(req, res) {
     var db = req.db;
     var skillToUpdate = req.params.id;
     db.collection('skillcollection').updateById(skillToUpdate, {$set: {name: req.body.name}}, function(err, result) {
@@ -84,7 +86,7 @@ router.post('/editskill/:id', function(req, res) {
     });
 })
 
-router.delete('/deleteskill/:id', function(req, res) {
+router.delete('/deleteskill/:id', isAuthed, function(req, res) {
     var db = req.db;
     var skillToDelete = req.params.id;
     db.collection('skillcollection').removeById(skillToDelete, function(err, result) {

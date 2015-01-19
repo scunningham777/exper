@@ -5,6 +5,7 @@ block content
     form#formAddUser(class='form-signin', action='/signup', method='POST')
         input#inputUserName(type="text", placeholder="Username", name="username")
         input#inputUserPassword(type="password", placeholder="Password", name="password")
+        input#inputUserEmail(type="email", placeholder="Email", name="email")
         button#btnSubmit(type="submit") submit
     #message
         if message
