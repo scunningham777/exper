@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	form(method='POST', action="/forgot")
+		legend Forgot Password
+		input#inputUserName(type="text", placeholder="Username", name="username")
+		button#btnSubmit(type="submit") Send Temporary Password
+    #message
+        if message
+            h1(style="color:red") #{message}

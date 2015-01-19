@@ -1,37 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-/* require authentication for all pages */
-/*router.all('*', function(req, res, next) {
-    next();
-})
-*/
-
-/* GET home page. */
-/*router.get('/', function(req, res) {
-  res.render('index', { title: 'JQuery Productivity Tracker App!' });
-});
-
-module.exports = router;
-*/
-
-var isAuthenticated = function (req, res, next) {
-    // if user is authenticated in the session, call the next() to call the next request handler 
-    // Passport adds this method to request object. A middleware is allowed to add properties to
-    // request and response objects
-    if (req.isAuthenticated())
-        return next();
-    // if the user is not authenticated then redirect him to the login page
-    res.redirect('/');
-}
+var isAuthenticated = require('./isAuthenticated');
 
 module.exports = function(passport){
 
     /* GET login page. */
     router.get('/', function(req, res) {
-        // Display the Login page with any flash message, if any
-//        res.render('index', { message: req.flash('message') });
-       res.render('login', { message: req.flash('message'), title: 'ProductivityTracker - Login' });
+        if (req.isAuthenticated()) {
+            res.redirect('/home');
+        }
+        else {
+            res.render('login', { message: req.flash('message'), title: 'ProductivityTracker - Login' });
+        }
     });
 
     // for completeness sake
@@ -69,6 +50,75 @@ module.exports = function(passport){
         req.session.currentUserId = 0;
         res.redirect('/');
     });
+
+    /* User forgot password */
+    router.get('/forgot', function(req, res) {
+      res.render('forgot');
+    });
+
+    router.post('/forgot', function(req, res, next) {
+        async.waterfall([
+            function(done) {
+              crypto.randomBytes(20, function(err, buf) {
+                var token = buf.toString('hex');
+                done(err, token);
+              });
+            },
+            function(token, done) {
+              var dbUsers = req.db.collection('userclollection');
+              dbUsers.findOne({ username: req.body.username }, function(err, user) {
+                if (!user) {
+                  req.flash('message', 'No account with that username exists.');
+                  return res.redirect('/forgot');
+                }
+
+                var resetPasswordToken = token;
+                var resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+                dbUsers.updateById(req.db.toObjectID(user._id), {$set: {resetPasswordToken: resetPasswordToken, resetPasswordExpires: resetPasswordExpires}}, function(err, result) {
+                  done(err, token, user);
+                });
+              });
+            },
+            function(token, user, done) {
+              var smtpTransport = nodemailer.createTransport('SMTP', {
+                service: 'Gmail',
+                auth: {
+                  user: 's.cunningham777@gmail.com',
+                  pass: 'saslich'
+                }
+              });
+              var mailOptions = {
+                to: user.email,
+                from: 'NO-REPLY@cunninghameditorial.com',
+                subject: 'ProductivityTracker Password Reset',
+                text: 'You are receiving this because you have (or someone else has) requested the reset of the password for your account on ProductivityTracker.\n\n' +
+                  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                  'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+              };
+              smtpTransport.sendMail(mailOptions, function(err) {
+                req.flash('message', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+                done(err, 'done');
+              });
+            }
+        ], function(err) {
+            if (err) return next(err);
+            res.redirect('/forgot');
+        });
+    });
+
+    //user is resetting password
+    router.get('/reset/:token', function(req, res) {
+      req.db.collection('usercollection').findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+        if (!user) {
+          req.flash('message', 'Password reset token is invalid or has expired.');
+          return res.redirect('/forgot');
+        }
+        res.render('reset');
+      });
+    });
+
 
     return router;
 }
