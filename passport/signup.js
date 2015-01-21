@@ -22,7 +22,7 @@ module.exports = function(passport) {
 	                } else {
 	                  // if there is no user with that username
 	                  // create the user
-	                    req.db.collection('usercollection').insert({username:username, password:createHash(password), email:req.param(email)}, function(err, result){
+	                    req.db.collection('usercollection').insert({username:username, password:createHash(password), email:req.param('email')}, function(err, result){
 	                        if (err){
 	                          console.info('Error in Saving user: ' + err);  
 	                          throw err;  
@@ -37,16 +37,15 @@ module.exports = function(passport) {
 	        };
 
 		    //simple form validation
-		    if (username == null || username == "" || password == null || password == "" || req.param(email) == null || req.param(email) == "") {
+		    if (username == null || username == "" || password == null || password == "" || req.param('email') == null || req.param('email') == "") {
 		    	console.info('Invalid User information given');
-		    	done(null, false, req.flash('error', 'Invalid User info provided');
+		    	done(null, false, req.flash('error', 'Invalid User info provided'));
 		    }
 		     
 		    // Delay the execution of findOrCreateUser and execute 
 		    // the method in the next tick of the event loop
 		    process.nextTick(findOrCreateUser);
-		    })
-	    }
+		})
 	);
 
 	// Generates hash using bCrypt
