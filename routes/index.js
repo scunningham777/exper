@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var async = require('async');
+var crypto = require('crypto');
 
 var isAuthenticated = require('./isAuthenticated');
 
@@ -84,8 +86,8 @@ module.exports = function(passport){
               var smtpTransport = nodemailer.createTransport('SMTP', {
                 service: 'Gmail',
                 auth: {
-                  user: 's.cunningham777@gmail.com',
-                  pass: 'saslich'
+                  user: '!!Gmail username here!!',
+                  pass: '!!Gmail password here!!'
                 }
               });
               var mailOptions = {
@@ -116,6 +118,51 @@ module.exports = function(passport){
           return res.redirect('/forgot');
         }
         res.render('reset');
+      });
+    });
+
+    router.post('/reset/:token', function(req, res) {
+      async.waterfall([
+        function(done) {
+          req.db.collection('usercollection').findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+            if (!user) {
+              req.flash('message', 'Password reset token is invalid or has expired.');
+              return res.redirect('back');
+            }
+
+            user.password = bCrypt.hashSync(req.body.password, bCrypt.genSaltSync(10), null);
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+
+            req.db.collection('usercollection').update({$set:{password:user.password, resetPasswordToken:undefined, resetPasswordExpires:undefined}}, function(err) {
+              req.logIn(user, function(err) {
+                done(err, user);
+              });
+            });
+          });
+        },
+        function(user, done) {
+          var smtpTransport = nodemailer.createTransport('SMTP', {
+            service: 'Gmail',
+            auth: {
+              user: '!!Gmail username here!!',
+              pass: '!!Gmail password here!!'
+            }
+          });
+          var mailOptions = {
+            to: user.email,
+            from: 'NO-REPLY@cunninghameditorial.com',
+            subject: 'Your ProductivityTracker password has been changed',
+            text: 'Hello,\n\n' +
+              'This is a confirmation that the password for your account ' + user.username + ' has just been changed.\n'
+          };
+          smtpTransport.sendMail(mailOptions, function(err) {
+            req.flash('success', 'Success! Your password has been changed.');
+            done(err);
+          });
+        }
+      ], function(err) {
+        res.redirect('/');
       });
     });
 
