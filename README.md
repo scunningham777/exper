@@ -1,6 +1,13 @@
 Simple app for tracking time spent developing user-defined skills.
 
-You will need a MongoDB server - link to this in line 9 of app.js:
+You will need a MongoDB server - link to this in line 13 of app.js:
 <code>var db = mongo.db('mongodb://localhost:27017/productivity-tracker', {native_parser:true});</code>
 
-Currently the db requires a root collection called "usercollection", and the user's _id is hard-wired in the code. Be sure to enter your user's _id in all of the route files (currently skills.js and sessions.js). All of this should be remedied soon, right after I finish adding full CRUD capabilities for skills and sessions.
+Also be sure to enter proper credentials for your SMTP service of choice in routes/index.js (currently entered in two places; also currently doesn't work :-/ )
+
+Updates to watch for:
+<ol>
+<li>Reset password email working</li>
+<li>Angular/Ionic front end</li>
+<li>Switch to Mongoose to handle DB schemas & models</li>
+</ol>
