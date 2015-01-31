@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var async = require('async');
 var crypto = require('crypto');
+var nodemailer = require('nodemailer');
+var bCrypt = require('bcrypt-nodejs');
+
 
 var isAuthenticated = require('./isAuthenticated');
 
@@ -55,7 +58,7 @@ module.exports = function(passport){
 
     /* User forgot password */
     router.get('/forgot', function(req, res) {
-      res.render('forgot');
+      res.render('forgot', {message: req.flash('message')});
     });
 
     router.post('/forgot', function(req, res, next) {
@@ -67,10 +70,11 @@ module.exports = function(passport){
               });
             },
             function(token, done) {
-              var dbUsers = req.db.collection('userclollection');
+              var dbUsers = req.db.collection('usercollection');
               dbUsers.findOne({ username: req.body.username }, function(err, user) {
                 if (!user) {
                   req.flash('message', 'No account with that username exists.');
+                  console.info('Attempted to reset password for unknown user');
                   return res.redirect('/forgot');
                 }
 
@@ -84,15 +88,15 @@ module.exports = function(passport){
             },
             function(token, user, done) {
               var smtpTransport = nodemailer.createTransport('SMTP', {
-                service: 'Gmail',
+                service: 'SendGrid',
                 auth: {
-                  user: '!!Gmail username here!!',
-                  pass: '!!Gmail password here!!'
+                  user: '!!SendGrid username here!!',
+                  pass: '!!SendGrid password here!!'
                 }
               });
               var mailOptions = {
                 to: user.email,
-                from: 'NO-REPLY@cunninghameditorial.com',
+                from: '!!sender email here!!',
                 subject: 'ProductivityTracker Password Reset',
                 text: 'You are receiving this because you have (or someone else has) requested the reset of the password for your account on ProductivityTracker.\n\n' +
                   'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -105,7 +109,10 @@ module.exports = function(passport){
               });
             }
         ], function(err) {
-            if (err) return next(err);
+            if (err) {
+              return next(err);
+              console.info('Forgot password error');
+            }
             res.redirect('/forgot');
         });
     });
@@ -134,24 +141,26 @@ module.exports = function(passport){
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
 
-            req.db.collection('usercollection').update({$set:{password:user.password, resetPasswordToken:undefined, resetPasswordExpires:undefined}}, function(err) {
+            req.db.collection('usercollection').updateById(user._id, {$set:{password:user.password}, $unset:{resetPasswordToken:"", resetPasswordExpires:""}}, function(err) {
+              console.info(user.username + '\'s password updated');
+              req.session.currentUserId = user._id;
               req.logIn(user, function(err) {
                 done(err, user);
-              });
+              }); 
             });
           });
         },
         function(user, done) {
           var smtpTransport = nodemailer.createTransport('SMTP', {
-            service: 'Gmail',
+            service: 'SendGrid',
             auth: {
-              user: '!!Gmail username here!!',
-              pass: '!!Gmail password here!!'
+              user: '!!SendGrid username here!!',
+              pass: '!!SendGrid password here!!'
             }
           });
           var mailOptions = {
             to: user.email,
-            from: 'NO-REPLY@cunninghameditorial.com',
+            from: '!!sender email here!!',
             subject: 'Your ProductivityTracker password has been changed',
             text: 'Hello,\n\n' +
               'This is a confirmation that the password for your account ' + user.username + ' has just been changed.\n'

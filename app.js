@@ -7,7 +7,6 @@ var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
-var nodemailer = require('nodemailer');
 
 var mongo = require('mongoskin');
 var db = mongo.db('mongodb://localhost:27017/productivity-tracker', {native_parser:true});
