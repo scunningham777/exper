@@ -7,6 +7,7 @@ var bCrypt = require('bcrypt-nodejs');
 
 
 var isAuthenticated = require('./isAuthenticated');
+var isMobile = require('./isMobile');
 
 module.exports = function(passport){
 
@@ -46,7 +47,12 @@ module.exports = function(passport){
 
     /* GET Home Page */
     router.get('/home', isAuthenticated, function(req, res){
-        res.render('index', { user: req.user, title: 'ProductivityTracker' });
+/*        if (isMobile(req)) {
+          res.send("mobileTime!");
+        }
+        else {*/
+          res.render('index', { username: req.user.username, title: 'ProductivityTracker' });
+//        }
     });
 
     /* Handle Logout */

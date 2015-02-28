@@ -6,17 +6,10 @@ block content
   script(src='/javascripts/global.js')
 
   h1= title
-  p Track your self-development time.
+  p Welcome, #{username}. Track your self-development time.
 
     // Wrapper
     #wrapper
-        //LOGIN VIEW WRAPPER
-        //#loginView
-            input#inputUserName(type="text", placeholder="Username" style="display:block")
-            input#inputPassword(type="password", placeholder="Password" style="display:block")
-            button#btnLogin Log In
-            span or
-            button#btnSignup Sign Up
 
         //SKILL LIST VIEW WRAPPER
         #skillListView(style="display:none")
