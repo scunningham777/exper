@@ -4,6 +4,11 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var bCrypt = require('bcrypt-nodejs');
+var passwords = require('../utils/passwords');
+
+var sendgridUser = passwords.sendgridUsername;
+var sendgridPassword = passwords.sendgridPassword;
+var senderAddress = passwords.sendgridNoreplyAddress;
 
 
 var isAuthenticated = require('./isAuthenticated');
@@ -96,13 +101,13 @@ module.exports = function(passport){
               var smtpTransport = nodemailer.createTransport('SMTP', {
                 service: 'SendGrid',
                 auth: {
-                  user: '!!SendGrid username here!!',
-                  pass: '!!SendGrid password here!!'
+                  user: sendgridUser,
+                  pass: sendgridPassword
                 }
               });
               var mailOptions = {
                 to: user.email,
-                from: '!!sender email here!!',
+                from: senderAddress,
                 subject: 'ProductivityTracker Password Reset',
                 text: 'You are receiving this because you have (or someone else has) requested the reset of the password for your account on ProductivityTracker.\n\n' +
                   'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -160,13 +165,13 @@ module.exports = function(passport){
           var smtpTransport = nodemailer.createTransport('SMTP', {
             service: 'SendGrid',
             auth: {
-              user: '!!SendGrid username here!!',
-              pass: '!!SendGrid password here!!'
+              user: sendgridUser,
+              pass: sendgridPassword
             }
           });
           var mailOptions = {
             to: user.email,
-            from: '!!sender email here!!',
+            from: senderAddress,
             subject: 'Your ProductivityTracker password has been changed',
             text: 'Hello,\n\n' +
               'This is a confirmation that the password for your account ' + user.username + ' has just been changed.\n'

@@ -17,6 +17,7 @@ router.get('/userlist', function(req, res) {
  */
 router.post('/login', function(req, res) {
 	var db = req.db;
+    req.body.username = req.body.username.toLowerCase();
 	db.collection('usercollection').findOne({username:req.body.username, password:req.body.password}, function (err, result) {
 		if (err) {
 			console.info(err);
@@ -37,6 +38,7 @@ router.post('/login', function(req, res) {
  */
 router.post('/adduniqueuser', function(req, res) {
 	var db = req.db;
+    req.body.username = req.body.username.toLowerCase();
     db.collection('usercollection').find({username:req.body.username, password:req.body.password}).toArray(function(err, result) {
         if (result.length > 0) {
             console.info('User Account with same username/password already exists');

@@ -45,57 +45,6 @@ $(document).ready(function() {
 
 // Functions =============================================================
 
-/*function tryLogin(event) {
-    event.preventDefault;
-
-    var triedUsername = $('#inputUserName').val();
-    var triedPassword = $('#inputPassword').val();
-
-    if (triedUsername !== '' && triedPassword !== '') {
-        loginOrSignup(triedUsername, triedPassword, '/users/login')
-    }
-    else {
-        window.alert ("Username and Password must not be blank");
-    }
-
-}
-
-function trySignup(event) {
-    event.preventDefault;
-
-    var triedUsername = $('#inputUserName').val();
-    var triedPassword = $('#inputPassword').val();
-
-    if (triedUsername.length < 3) {
-        window.alert ("Invalid Username: must be greater than 3 characters");
-    }
-    else if (triedPassword.length < 3) {
-        window.alert ("Invalid Password: must be greater than 3 characters");
-    }
-    else {
-        loginOrSignup(triedUsername, triedPassword, '/users/adduniqueuser');
-    }
-
-}
-
-function loginOrSignup(username, password, targetUrl){
-    $.ajax({
-        type: 'POST',
-        data: {'username':username, 'password':password},
-        url: targetUrl,
-        dataType: 'JSON'
-    }).done(function( response ) {
-        if (response.msg != null) {
-            console.log(response.msg);
-            alert(response.msg);
-        }
-        else {
-            handleNewSessionEvent();
-        }
-    });
-}
-*/
-
 function populateSkillTable() {
 
     hideAllViews();
@@ -210,7 +159,9 @@ function openSessionView(sessionParams) {
     var now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     var sessionDateField = $('#inputSessionDate').get(0)
-    sessionDateField.valueAsDate = now;
+    if (sessionDateField.hasOwnProperty('valueAsDate')) {           //TODO: improve this workaround for Safari
+        sessionDateField.valueAsDate = now;
+    }
 
  
     //insert values if passed in sessionParams
