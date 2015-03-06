@@ -8,21 +8,17 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
 
-var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
 var mongo = require('mongoskin');
 
-var db;
-if (env === 'development') {
-    db = mongo.db('mongodb://localhost:27017/productivity-tracker', {native_parser:true});
+var dbHost = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost';
+var dbPort = process.env.OPENSHIFT_MONGODB_DB_PORT || '27017';
+var dbUsername = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
+var dbPassword = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
+var dbCreds = '';
+if (dbUsername !== undefined && dbPassword !== undefined) {
+    bdCreds = dbUsername + ':' + dbPassword + '@';
 }
-else if (env === 'openshift') {
-    var dbHost = process.env.OPENSHIFT_MONGODB_DB_HOST;
-    var dbPort = process.env.OPENSHIFT_MONGODB_DB_PORT;
-    var dbUsername = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
-    var dbPassword = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
-    db = mongo.db('mongodb://' + dbUsername + ':' + dbPassword + '@' + dbHost + ':' + dbPort, {native_parser:true});
-}
+var db = mongo.db('mongodb://' + dbCreds + dbHost + ':' + dbPort + '/productivity-tracker', {native_parser:true});
 
 var routes = require('./routes/index')(passport);
 var users = require('./routes/users');
