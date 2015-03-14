@@ -1,15 +1,16 @@
 extends layout
 
 block content
-    form(class='form-signin', action='/login', method='POST')
-        input(type='text', name='username', class='form-control', placeholder='Username', required, , autofocus=true)
-        input(type='password', name='password', class='form-control', placeholder='Password', required)
-        button(class='btn btn-lg btn-primary btn-block', type='submit') Sign in
-        span.clearfix
-    div
-      a(href='/signup', class='text-center new-account') Create an account
-    div
-      a(href='/forgot') Forgot Password?
     #message
     if message
-        h1.text-center.error-message #{message}
+        h3(class="text-center assertive") #{message}        
+    form(class='list', action='/login', method='POST')
+        label(class='item item-input')
+            span(class='input-label') Username
+            input(type='text', name='username', class='form-control', required, autofocus=true)
+        label(class='item item-input')
+            span(class='input-label') Password
+            input(type='password', name='password', class='form-control', required)
+        button(class='button button-block button-calm', type='submit') Sign in
+    a(href='/signup' class='button button-block' style="background-color:#D0DCEB") Create an account
+    a(href='/forgot') Forgot Password?

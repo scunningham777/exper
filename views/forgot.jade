@@ -1,10 +1,12 @@
 extends layout
 
 block content
-    form(method='POST', action="/forgot")
-        legend Forgot Password
-        input#inputUserName(type="text", placeholder="Username", name="username")
-        button#btnSubmit(type="submit") Send Temporary Password
+    h3(class="text-center") Forgot your Password? Enter your username:       
     #message
-        if message
-            h1(style="color:red") #{message}
+    if message
+        h3(class="text-center assertive") #{message} 
+    form(method='POST', action="/forgot", class="list")
+        label(class='item item-input')
+            span(class='input-label') Username
+            input#inputUserName(type="text", name="username", required, autofocus=true)
+        button#btnSubmit(type="submit", class='button button-block button-calm') Send Temporary Password

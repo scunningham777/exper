@@ -1,12 +1,19 @@
 extends layout
 
 block content
-    h2 Enter a Username and Password:
-    form#formAddUser(class='form-signin', action='/signup', method='POST')
-        input#inputUserName(type="text", placeholder="Username", name="username")
-        input#inputUserPassword(type="password", placeholder="Password", name="password")
-        input#inputUserEmail(type="email", placeholder="Email", name="email")
-        button#btnSubmit(type="submit") submit
+    h3(class="text-center") Create a New Account:
     #message
-        if message
-            h1(style="color:red") #{message}
+    if message
+        h3(class="text-center assertive") #{message}        
+    form#formAddUser(class='list', action='/signup', method='POST')
+        label(class='item item-input')
+            span(class='input-label') Username
+            input#inputUserName(type="text", name="username", class="form-control", required, autofocus=true)
+        label(class='item item-input')
+            span(class='input-label') Password
+            input#inputUserPassword(type="password", name="password", class="form-control", required)
+        label(class='item item-input')
+            span(class='input-label') Email
+            input#inputUserEmail(type="email", name="email", class="form-control", required)
+        button#btnSubmit(class="button button-block button-calm", type="submit") Submit
+    a(href="/", class="button button-block", style="background-color:#D0DCEB") Cancel

@@ -16,7 +16,7 @@ var dbUsername = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
 var dbPassword = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
 var dbCreds = '';
 if (dbUsername !== undefined && dbPassword !== undefined) {
-    bdCreds = dbUsername + ':' + dbPassword + '@';
+    dbCreds = dbUsername + ':' + dbPassword + '@';
 }
 var db = mongo.db('mongodb://' + dbCreds + dbHost + ':' + dbPort + '/productivity-tracker', {native_parser:true});
 
