@@ -10,6 +10,7 @@ var flash = require('connect-flash');
 
 var mongo = require('mongoskin');
 
+
 var dbHost = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost';
 var dbPort = process.env.OPENSHIFT_MONGODB_DB_PORT || '27017';
 var dbUsername = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
@@ -31,6 +32,8 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.set('partials', path.join(__dirname, 'partials'));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));

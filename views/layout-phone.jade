@@ -5,8 +5,9 @@ html
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='/lib/ionic/css/ionic.css')
-    body(class='ionic', style='height:100vh')
+        include scripts
+    body(class='ionic', style='height:100vh', ng-app='myxp')
         div(class='bar bar-header bar-dark' style="background-color:#494D52;")
             h1(class='title') Productivity Tracker
-        div(class='content has-header padding')
+        div(ui-view, class='content has-header')
             block content

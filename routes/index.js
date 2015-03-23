@@ -52,12 +52,12 @@ module.exports = function(passport){
 
     /* GET Home Page */
     router.get('/home', isAuthenticated, function(req, res){
-/*        if (isMobile(req)) {
-          res.send("mobileTime!");
+        if (isMobile(req)) {
+          res.render('layout-phone', {username: req.user.username, title: 'MyXP'});
         }
-        else {*/
+        else {
           res.render('index', { username: req.user.username, title: 'ProductivityTracker' });
-//        }
+        }
     });
 
     /* Handle Logout */

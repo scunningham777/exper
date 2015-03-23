@@ -1,0 +1,9 @@
+<div ng-controller="mxSkillsCtrl" class="padding">
+	<h3 class="text-centered">Here are your skills:</h3>
+	<div class="list">
+		<div ng-repeat="skill in skills" class="item">
+			{{skill.name}}
+			<span class="badge badge-calm">{{skill.totalDuration}}</span>
+		</div>
+	</div>
+</div>
