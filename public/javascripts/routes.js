@@ -6,4 +6,8 @@ application.config(function($stateProvider, $urlRouterProvider) {
 		url: "/",
 		templateUrl: "partials/skills.html"
 	});
+
+	$stateProvider.state('addEditSession', {
+		templateUrl: "partials/addEditSession.html"
+	});
 })

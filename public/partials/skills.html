@@ -1,9 +1,12 @@
 <div ng-controller="mxSkillsCtrl" class="padding">
-	<h3 class="text-centered">Here are your skills:</h3>
+	<h3 class="text-center">Here are your skills:</h3>
 	<div class="list">
-		<div ng-repeat="skill in skills" class="item">
+		<div ng-repeat="skill in skills" class="item item-button-left" style="padding-left:56px">
 			{{skill.name}}
-			<span class="badge badge-calm">{{skill.totalDuration}}</span>
+			<button class="button button-clear" ng-click="goToAddSession(skill)">
+				<i class="icon ion-ios-plus-outline"></i>
+			</button>
+			<button class="badge badge-calm" style="border-width:1px">{{skill.totalDuration}} hrs</button>
 		</div>
 	</div>
 </div>
