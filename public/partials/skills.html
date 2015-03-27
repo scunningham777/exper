@@ -1,12 +1,31 @@
-<div ng-controller="mxSkillsCtrl" class="padding">
-	<h3 class="text-center">Here are your skills:</h3>
-	<div class="list">
-		<div ng-repeat="skill in skills" class="item item-button-left" style="padding-left:56px">
+<div ng-controller="mxSkillsCtrl">
+	<ion-header-bar class="bar-positive">
+      <div class="buttons">
+        <button class="button button-icon icon ion-ios-minus-outline"
+          ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+      </div>
+      <h1 class="title">Your Skills</h1>
+      <div class="buttons">
+        <button class="button" ng-click="data.showDelete = false; data.showReorder = !data.showReorder">
+            Reorder
+        </button>
+      </div>
+    </ion-header-bar>
+	<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
+		<ion-item ng-repeat="skill in skills" item="skill" class="item-remove-animate">
 			{{skill.name}}
-			<button class="button button-clear" ng-click="goToAddSession(skill)">
-				<i class="icon ion-ios-plus-outline"></i>
-			</button>
+			<ion-delete-button class="ion-minus-circled" ng-click="deleteSkill(skill)">
+			</ion-delete-button>
+			<ion-option-button class="button-assertive" ng-click="editSkill(skill)">
+            	Edit
+          	</ion-option-button>
+          	<ion-option-button class="button-calm" ng-click="gotoNewSession(item)">
+            	Share
+         	</ion-option-button>
+          	<ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)">
+          	</ion-reorder-button>
 			<button class="badge badge-calm" style="border-width:1px">{{skill.totalDuration}} hrs</button>
-		</div>
-	</div>
+		</ion-item>
+	</ion-list>
+	<button class='button button-block' style="background-color:#D0DCEB">Add New Skill</button>
 </div>
