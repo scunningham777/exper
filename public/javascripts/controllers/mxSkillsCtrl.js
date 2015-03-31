@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('mxSkillsCtrl', function($scope, mxSkill) {
+application.controller('mxSkillsCtrl', function($scope, $state, mxSkill) {
 	$scope.data = {
 		showDelete:false,
 		showReorder:false
@@ -14,6 +14,7 @@ application.controller('mxSkillsCtrl', function($scope, mxSkill) {
 
 	$scope.gotoAddSkill = function() {
 		console.log("gotoAddSkill");
+
 	};
 
 	$scope.deleteSkill = function(skill) {

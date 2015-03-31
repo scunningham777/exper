@@ -1,0 +1,15 @@
+<ion-modal-view ng-controller="mxAddEditSkillCtrl">
+    <ion-header-bar class="bar bar-header">
+        <h1 class="title">New Skill</h1>
+        <button class="button button-clear" ng-click="modal.hide()">Cancel</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Skill Name</span>
+                <input ng-model="newSkill.name" type="text">
+            </label>
+            <button class="button button-full button-calm" ng-click="createSkill(newSkill)">Create</button>
+        </div>
+    </ion-content>
+</ion-modal-view>
