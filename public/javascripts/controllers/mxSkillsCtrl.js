@@ -14,7 +14,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill) {
 
 	$scope.gotoAddSkill = function() {
 		console.log("gotoAddSkill");
-
+		$state.go('addEditSkill');
 	};
 
 	$scope.deleteSkill = function(skill) {
