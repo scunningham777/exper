@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModal) {
+application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModal, mxSkill) {
 	$ionicModal.fromTemplateUrl('addEditSkillModal.html', {
 		scope: $scope,
 //		animation: 'slide-in-up'
@@ -33,7 +33,11 @@ application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModa
 			return;
 		}
 
-		
-		alert("Adding new Skill " + newSkill.name);
+		var skillToBeAdded = new mxSkill();
+		skillToBeAdded.name = newSkill.name;
+		skillToBeAdded.$addNew(function() {
+			//TODO: handle failure for duplicate skill
+			$scope.closeModal();	
+		})
 	}
 });
