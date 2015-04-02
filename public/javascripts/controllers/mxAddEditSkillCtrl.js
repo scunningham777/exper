@@ -9,11 +9,16 @@ application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModa
 		$scope.modal.show();
 	});
 
+	$scope.newSkill = {
+		name:''
+	};
+
 	$scope.openModal = function() {
 		$scope.modal.show();
 	};
 	$scope.closeModal = function() {
 		$scope.modal.hide();
+		$state.go('skills')
 	}
 	//Cleanup the modal when we're done with it!
   	$scope.$on('$destroy', function() {
@@ -22,11 +27,13 @@ application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModa
 
 
 	$scope.createSkill = function(newSkill) {
-		if (newSkill.name==null || newSkill.name=='') {
-			alert("Can't create skill with new name!");
+		console.log("createSkill clicked");
+		if (newSkill.name==='') {
+			alert("Can't create skill with no name!");
 			return;
 		}
 
+		
 		alert("Adding new Skill " + newSkill.name);
 	}
 });

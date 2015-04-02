@@ -12,10 +12,6 @@ application.config(function($stateProvider, $urlRouterProvider) {
 	});
 
 	$stateProvider.state('addEditSkill', {
-		views: {
-			'modalView': {
-				templateUrl: "partials/addEditSkill.html"
-			}
-		}
+		templateUrl: "partials/addEditSkill.html"
 	});
 })
