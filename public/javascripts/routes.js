@@ -4,14 +4,18 @@ application.config(function($stateProvider, $urlRouterProvider) {
 
 	$stateProvider.state('skills', {
 		url: "/",
-		templateUrl: "partials/skills.html"
+		templateUrl: "partials/skills.html",
+		location:"false"
 	});
 
 	$stateProvider.state('addEditSession', {
-		templateUrl: "partials/addEditSession.html"
+		templateUrl: "partials/addEditSession.html",
+		location:"false"
 	});
 
 	$stateProvider.state('addEditSkill', {
-		templateUrl: "partials/addEditSkill.html"
+		url:'/editSkill/:skillId'
+		templateUrl: "partials/addEditSkill.html",
+		location:"false"
 	});
 })

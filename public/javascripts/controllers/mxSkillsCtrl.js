@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('mxSkillsCtrl', function($scope, $state, mxSkill) {
+application.controller('mxSkillsCtrl', function($scope, $state, $stateParams, mxSkill) {
 	$scope.data = {
 		showDelete:false,
 		showReorder:false
@@ -18,13 +18,21 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill) {
 	};
 
 	$scope.deleteSkill = function(skill) {
-		if (confirm("Are you sure you want to delete Skill \"" + skill.name + "\"?")) {
+		if (confirm("Are you sure you want to delete Skill \"" + skill.name + "\" and all of it's data?")) {
 			console.log("delete skill " + skill.name)
+			var skillToDelete = new mxSkill();
+
+			skillToDelete.$deleteById({id: skill._id}, function() {
+				console.log("Skill deleted: " + skill.name);
+				$scope.skills.splice($scope.skills.indexOf(skill));
+			});
 		};		
 	};
 
 	$scope.editSkill = function(skill) {
 		console.log("Edit skill " + skill.name);
+		$stateParams.skill = skill;
+		$state.go('addEditSkill', {name: skill.name, _id:skill._id});
 	};
 
 	$scope.moveItem = function(skill, fromIndex, toIndex) {

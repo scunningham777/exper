@@ -2,16 +2,16 @@
     <script id="addEditSkillModal.html" type="text/ng-template">
         <ion-modal-view>
             <ion-header-bar class="bar bar-header">
-                <h1 class="title">New Skill</h1>
+                <h1 class="title">{{isNewSkill?'New':'Edit'}} Skill</h1>
                 <button class="button button-clear" ng-click="closeModal()">Cancel</button>
             </ion-header-bar>
             <ion-content class="padding">
                 <div class="list">
                     <label class="item item-input">
                         <span class="input-label">Skill Name</span>
-                        <input ng-model="newSkill.name" type="text">
+                        <input ng-model="curSkill.name" type="text">
                     </label>
-                    <button class="button button-full button-calm" ng-click="createSkill(newSkill)">Create</button>
+                    <button class="button button-full button-calm" ng-click="submit(curSkill)">Submit</button>
                 </div>
             </ion-content>
         </ion-modal-view>

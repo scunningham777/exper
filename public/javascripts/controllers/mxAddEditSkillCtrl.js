@@ -1,6 +1,16 @@
 'use strict';
 
-application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModal, mxSkill) {
+application.controller('mxAddEditSkillCtrl', function($scope, $state, $stateParams, $ionicModal, mxSkill) {
+	$scope.isNewSkill = !$stateParams.skill;
+	if (!$scope.isNewSkill) {
+		$scope.curSkill = $stateParams.skill;
+	}
+	else {
+		$scope.curSkill = {
+			name: ''
+		}
+	}
+
 	$ionicModal.fromTemplateUrl('addEditSkillModal.html', {
 		scope: $scope,
 //		animation: 'slide-in-up'
@@ -8,10 +18,6 @@ application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModa
 		$scope.modal = modal;
 		$scope.modal.show();
 	});
-
-	$scope.newSkill = {
-		name:''
-	};
 
 	$scope.openModal = function() {
 		$scope.modal.show();
@@ -26,18 +32,32 @@ application.controller('mxAddEditSkillCtrl', function($scope, $state, $ionicModa
   	});
 
 
-	$scope.createSkill = function(newSkill) {
+	$scope.submit = function(skill) {
 		console.log("createSkill clicked");
-		if (newSkill.name==='') {
-			alert("Can't create skill with no name!");
+		if (skill.name==='') {
+			alert("Please enter something in the Name field");
 			return;
 		}
 
-		var skillToBeAdded = new mxSkill();
-		skillToBeAdded.name = newSkill.name;
-		skillToBeAdded.$addNew(function() {
-			//TODO: handle failure for duplicate skill
-			$scope.closeModal();	
-		})
+		var skillResource = new mxSkill();
+		skillResource.name = skill.name;
+		if ($scope.isNewSkill) {
+			skillResource.$addNew(successCallback, errorCallback);
+		}
+		else {
+			skillResource.$edit({id: $scope.curSkill._id}, successCallback, errorCallback);
+		}
+		function successCallback(response) {
+			if (response.msg === '') {			//empty = sucessful
+				$scope.closeModal();	
+			}
+			else {
+				alert("Error: " + response.msg);
+			}
+		};
+		function errorCallback(error) {
+			//TODO: test this at some point ;)
+			alert("An error occurred trying to save this skill - please try again")			
+		}
 	}
 });
