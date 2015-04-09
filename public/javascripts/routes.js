@@ -14,7 +14,7 @@ application.config(function($stateProvider, $urlRouterProvider) {
 	});
 
 	$stateProvider.state('addEditSkill', {
-		url:'/editSkill/:skillId'
+		url:'/editSkill/:skillId',
 		templateUrl: "partials/addEditSkill.html",
 		location:"false"
 	});
