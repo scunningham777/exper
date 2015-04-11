@@ -24,7 +24,7 @@
 	          	<ion-option-button class="button-calm" ng-click="gotoAddSession(skill)">
 	            	Exper
 	         	</ion-option-button>
-	          	<ion-reorder-button class="ion-navicon" on-reorder="moveItem(skill, $fromIndex, $toIndex)">
+	          	<ion-reorder-button class="ion-navicon" on-reorder="moveSkill(skill, $fromIndex, $toIndex)">
 	          	</ion-reorder-button>
 				<button class="badge badge-calm" ng-hide="data.showReorder" style="border-width:1px">{{skill.totalDuration}} hrs</button>
 			</ion-item>

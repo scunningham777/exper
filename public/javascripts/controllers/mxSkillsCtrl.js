@@ -1,20 +1,22 @@
 'use strict';
 
-application.controller('mxSkillsCtrl', function($scope, $state, $stateParams, mxSkill) {
+application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSession) {
 	$scope.data = {
 		showDelete:false,
 		showReorder:false
 	};
 
 	$scope.skills = mxSkill.listWithDuration();
-
-	$scope.gotoAddSession = function(skill) {
-		console.log("goToAddSession for skill " + skill.name);
-	};
+	$scope.sessions = {};
 
 	$scope.gotoAddSkill = function() {
 		console.log("gotoAddSkill");
 		$state.go('addEditSkill');
+	};
+
+	$scope.editSkill = function(skill) {
+		console.log("Edit skill " + skill.name);
+		$state.go('addEditSkill', {skillName: skill.name, skillId:skill._id});
 	};
 
 	$scope.deleteSkill = function(skill) {
@@ -29,13 +31,24 @@ application.controller('mxSkillsCtrl', function($scope, $state, $stateParams, mx
 		};		
 	};
 
-	$scope.editSkill = function(skill) {
-		console.log("Edit skill " + skill.name);
-		$stateParams.skill = skill;
-		$state.go('addEditSkill', {name: skill.name, _id:skill._id});
+	$scope.showSessionsForSkill = function(skill) {
+		//
+	}
+
+	$scope.gotoAddSession = function(skill) {
+		if (!!skill) {
+			console.log("goToAddSession for skill " + skill.name);
+			$state.go('addEditSession', {skillId: skill._id});
+		}
+		else {
+			console.log("add new session");
+			$state.go('addEditSession');
+		}
 	};
 
-	$scope.moveItem = function(skill, fromIndex, toIndex) {
+
+
+	$scope.moveSkill = function(skill, fromIndex, toIndex) {
 		if(toIndex>fromIndex) toIndex-=1;
     	$scope.skills.splice(fromIndex, 1);
     	$scope.skills.splice(toIndex, 0, skill);

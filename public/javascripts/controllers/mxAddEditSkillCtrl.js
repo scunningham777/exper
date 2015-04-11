@@ -1,9 +1,12 @@
 'use strict';
 
 application.controller('mxAddEditSkillCtrl', function($scope, $state, $stateParams, $ionicModal, mxSkill) {
-	$scope.isNewSkill = !$stateParams.skill;
+	$scope.isNewSkill = !$stateParams.skillId;
 	if (!$scope.isNewSkill) {
-		$scope.curSkill = $stateParams.skill;
+		$scope.curSkill = {
+			name: $stateParams.skillName,
+			_id: $stateParams.skillId
+		}
 	}
 	else {
 		$scope.curSkill = {
