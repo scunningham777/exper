@@ -14,20 +14,26 @@
     </ion-header-bar>
     <ion-content class="has-subheader">
 		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-			<ion-item ng-repeat="skill in skills" item="skill" class="item-remove-animate">
-				{{skill.name}}
-				<ion-delete-button class="ion-minus-circled" ng-click="deleteSkill(skill)">
-				</ion-delete-button>
-				<ion-option-button class="button-assertive" ng-click="editSkill(skill)">
-	            	Edit
-	          	</ion-option-button>
-	          	<ion-option-button class="button-calm" ng-click="gotoAddSession(skill)">
-	            	Exper
-	         	</ion-option-button>
-	          	<ion-reorder-button class="ion-navicon" on-reorder="moveSkill(skill, $fromIndex, $toIndex)">
-	          	</ion-reorder-button>
-				<button class="badge badge-calm" ng-hide="data.showReorder" style="border-width:1px">{{skill.totalDuration}} hrs</button>
-			</ion-item>
+			<div ng-repeat="skill in skills">
+				<ion-item item="skill" class="item-remove-animate item-stable" ng-click="toggleSessionList(skill)" ng-class="active:isSessionListShown(skill)">
+					{{skill.name}}
+					<ion-delete-button class="ion-minus-circled" ng-click="deleteSkill(skill)">
+					</ion-delete-button>
+					<ion-option-button class="button-assertive" ng-click="editSkill(skill)">
+		            	Edit
+		          	</ion-option-button>
+		          	<ion-option-button class="button-calm" ng-click="gotoAddSession(skill)">
+		            	Exper
+		         	</ion-option-button>
+		          	<ion-reorder-button class="ion-navicon" on-reorder="moveSkill(skill, $fromIndex, $toIndex)">
+		          	</ion-reorder-button>
+					<button class="badge badge-calm" ng-hide="data.showReorder" style="border-width:1px">{{skill.totalDuration}} hrs</button>
+				</ion-item>
+				<ion-item class="item-accordian" ng-repeat="session in skill.sessions" ng-show="isSessionListShown(skill)">
+					{{session.date}} - {{session.duration}}
+					<ion-delete-button class="ion-minus-circled" ng-click="deleteSession(session)">
+					</ion-delete-button>
+				</ion-item>
 		</ion-list>
 		<button class='button button-block' style="background-color:#D0DCEB" ng-click="gotoAddSkill()">Add New Skill</button>
 	</ion-content>

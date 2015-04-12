@@ -7,7 +7,6 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 	};
 
 	$scope.skills = mxSkill.listWithDuration();
-	$scope.sessions = {};
 
 	$scope.gotoAddSkill = function() {
 		console.log("gotoAddSkill");
@@ -32,7 +31,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 	};
 
 	$scope.showSessionsForSkill = function(skill) {
-		//
+		//check to see if the 
 	}
 
 	$scope.gotoAddSession = function(skill) {
@@ -45,6 +44,8 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 			$state.go('addEditSession');
 		}
 	};
+
+	$scope.deleteSession = funciton(){}
 
 
 
