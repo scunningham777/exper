@@ -7,6 +7,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 	};
 
 	$scope.skills = mxSkill.listWithDuration();
+	$scope.currentSkillShowingSessions = null;
 
 	$scope.gotoAddSkill = function() {
 		console.log("gotoAddSkill");
@@ -30,8 +31,25 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 		};		
 	};
 
+	$scope.isSessionListShown = function(skill) {
+		return $scope.currentSkillShowingSessions === skill._id;
+	}
+
+	$scope.toggleSessionList = function(skill) {
+		if ($scope.isSessionListShown(skill)) {
+	    	$scope.currentSkillShowingSessions = null;
+	    } else {
+	    	$scope.showSessionsForSkill(skill);
+	    }
+	};
+
 	$scope.showSessionsForSkill = function(skill) {
-		//check to see if the 
+		console.dir($scope.skills);
+		console.log($scope.skills.indexOf(skill));
+		if ($scope.skills.indexOf(skill) != -1 && $scope.skills[$scope.skills.indexOf(skill)].sessions === undefined ) {
+			$scope.skills[$scope.skills.indexOf(skill)].sessions = mxSession.listForSkill({skillId:skill._id});
+		}
+		$scope.currentSkillShowingSessions = skill._id;
 	}
 
 	$scope.gotoAddSession = function(skill) {
@@ -45,7 +63,11 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 		}
 	};
 
-	$scope.deleteSession = funciton(){}
+	$scope.deleteSession = function(session){
+		if (!!session && confirm("Are you sure you want to delete this Session?")) {
+			mxSession.deleteById({id: session._id});
+		}
+	}
 
 
 
@@ -55,5 +77,9 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
     	$scope.skills.splice(toIndex, 0, skill);
     	//save skills back to database with updated order?
     	console.log("Reordering won't persist!");
+  	};
+
+  	$scope.stringifyDate = function(date) {
+  		return new Date(date).toDateString()
   	};
 });

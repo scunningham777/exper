@@ -15,7 +15,7 @@
     <ion-content class="has-subheader">
 		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
 			<div ng-repeat="skill in skills">
-				<ion-item item="skill" class="item-remove-animate item-stable" ng-click="toggleSessionList(skill)" ng-class="active:isSessionListShown(skill)">
+				<ion-item item="skill" class="item-remove-animate" ng-click="toggleSessionList(skill)" ng-class="{active:isSessionListShown(skill)}">
 					{{skill.name}}
 					<ion-delete-button class="ion-minus-circled" ng-click="deleteSkill(skill)">
 					</ion-delete-button>
@@ -30,10 +30,11 @@
 					<button class="badge badge-calm" ng-hide="data.showReorder" style="border-width:1px">{{skill.totalDuration}} hrs</button>
 				</ion-item>
 				<ion-item class="item-accordian" ng-repeat="session in skill.sessions" ng-show="isSessionListShown(skill)">
-					{{session.date}} - {{session.duration}}
+					{{stringifyDate(session.date)}} - {{session.duration}} hrs
 					<ion-delete-button class="ion-minus-circled" ng-click="deleteSession(session)">
 					</ion-delete-button>
 				</ion-item>
+			</div>
 		</ion-list>
 		<button class='button button-block' style="background-color:#D0DCEB" ng-click="gotoAddSkill()">Add New Skill</button>
 	</ion-content>

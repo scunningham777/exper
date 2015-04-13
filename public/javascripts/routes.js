@@ -14,7 +14,7 @@ application.config(function($stateProvider, $urlRouterProvider) {
 			sessionDuration: undefined,
 			sessionDate: undefined,
 			skillId: undefined
-		}
+		},
 		templateUrl: "partials/addEditSession.html",
 		location:"false"
 	});

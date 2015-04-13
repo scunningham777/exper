@@ -1,3 +1,21 @@
+/** For the phone/ionic version **/
+
+.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  -webkit-transition: 0.09s all linear;
+  -moz-transition: 0.09s all linear;
+  transition: 0.09s all linear;
+}
+.list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+  display: block !important;
+}
+
 body {
   padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -59,4 +77,25 @@ a {
 fieldset {
 	border:0;
 	padding:0; margin:0;
+}
+
+/** For the phone/ionic version **/
+
+/*
+ * http://docs.angularjs.org/api/ng/directive/ngShow#usage_animations
+ */
+.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  -webkit-transition: 0.09s all linear;
+  -moz-transition: 0.09s all linear;
+  transition: 0.09s all linear;
+}
+.list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+  display: block !important;
 }
