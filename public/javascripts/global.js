@@ -1,4 +1,4 @@
-var superNamespaceSafeProductivityTrackerEditModeIsActive = false;
+var superNamespaceSafeExperEditModeIsActive = false;
 
 
 // DOM Ready =============================================================
@@ -304,7 +304,7 @@ function generateAndAttachSessionListForSkill(selectedSkillId, parentElement) {
             }
             else {
                 var editModeStyleString = '';
-                if (superNamespaceSafeProductivityTrackerEditModeIsActive == false) {
+                if (superNamespaceSafeExperEditModeIsActive == false) {
                     editModeStyleString = 'style="display:none"';
                 }
                 sessionListContent += '<tr class="sessionListWrapper"><td colspan=3>';
@@ -468,7 +468,7 @@ function deleteSession(event){
 }
 
 function toggleEditMode() {
-    if (superNamespaceSafeProductivityTrackerEditModeIsActive == false) {
+    if (superNamespaceSafeExperEditModeIsActive == false) {
         switchEditModeOn();
     }
     else {
@@ -480,14 +480,14 @@ function switchEditModeOn() {
     $('.editable').show();
     $('.deletable').show();
     $('.noeditmode').hide();
-    superNamespaceSafeProductivityTrackerEditModeIsActive = true;
+    superNamespaceSafeExperEditModeIsActive = true;
 }
 
 function switchEditModeOff() {
     $('.editable').hide();
     $('.deletable').hide();
     $('.noeditmode').show();
-    superNamespaceSafeProductivityTrackerEditModeIsActive = false;
+    superNamespaceSafeExperEditModeIsActive = false;
 }
 
 

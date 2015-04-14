@@ -1,2 +1,2 @@
-var application = angular.module('myxp', ['ngResource', 'ui.router', 'ionic']);
+var application = angular.module('exper', ['ngResource', 'ui.router', 'ionic']);
 

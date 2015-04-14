@@ -29,8 +29,9 @@
 		          	</ion-reorder-button>
 					<button class="badge badge-calm" ng-hide="data.showReorder" style="border-width:1px">{{skill.totalDuration}} hrs</button>
 				</ion-item>
-				<ion-item class="item-accordian" ng-repeat="session in skill.sessions" ng-show="isSessionListShown(skill)">
-					{{stringifyDate(session.date)}} - {{session.duration}} hrs
+				<ion-item class="item-accordian padding-horizontal" ng-repeat="session in skill.sessions" ng-show="isSessionListShown(skill)">
+					{{stringifyDate(session.date)}}
+					<button class="badge badge-light" style="background-color:#D0DCEB; border-width:1px">{{session.duration}} hrs</button>
 					<ion-delete-button class="ion-minus-circled" ng-click="deleteSession(session)">
 					</ion-delete-button>
 				</ion-item>

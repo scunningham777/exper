@@ -22,7 +22,7 @@ module.exports = function(passport){
             res.redirect('/home');
         }
         else {
-            res.render('login', { message: req.flash('message'), title: 'ProductivityTracker - Login' });
+            res.render('login', { message: req.flash('message'), title: 'Exper - Login' });
         }
     });
 
@@ -40,7 +40,7 @@ module.exports = function(passport){
 
     /* GET Registration Page */
     router.get('/signup', function(req, res){
-        res.render('newuser', {message: req.flash('message'), title: 'ProductivityTracker - New User Signup'});
+        res.render('newuser', {message: req.flash('message'), title: 'Exper - New User Signup'});
     });
 
     /* Handle Registration POST */
@@ -53,10 +53,10 @@ module.exports = function(passport){
     /* GET Home Page */
     router.get('/home', isAuthenticated, function(req, res){
         if (isMobile(req)) {
-          res.render('layout-phone', {username: req.user.username, title: 'MyXP'});
+          res.render('layout-phone', {username: req.user.username, title: 'Exper'});
         }
         else {
-          res.render('index', { username: req.user.username, title: 'ProductivityTracker' });
+          res.render('index', { username: req.user.username, title: 'Exper' });
         }
     });
 
@@ -108,8 +108,8 @@ module.exports = function(passport){
               var mailOptions = {
                 to: user.email,
                 from: senderAddress,
-                subject: 'ProductivityTracker Password Reset',
-                text: 'You are receiving this because you have (or someone else has) requested the reset of the password for your account on ProductivityTracker.\n\n' +
+                subject: 'Exper Password Reset',
+                text: 'You are receiving this because you have (or someone else has) requested the reset of the password for your account on Exper.\n\n' +
                   'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                   'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                   'If you did not request this, please ignore this email and your password will remain unchanged.\n'
@@ -172,7 +172,7 @@ module.exports = function(passport){
           var mailOptions = {
             to: user.email,
             from: senderAddress,
-            subject: 'Your ProductivityTracker password has been changed',
+            subject: 'Your Exper password has been changed',
             text: 'Hello,\n\n' +
               'This is a confirmation that the password for your account ' + user.username + ' has just been changed.\n'
           };
