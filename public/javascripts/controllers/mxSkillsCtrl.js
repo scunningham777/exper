@@ -33,7 +33,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 
 	$scope.isSessionListShown = function(skill) {
 		return $scope.currentSkillShowingSessions === skill._id;
-	}
+	};
 
 	$scope.toggleSessionList = function(skill) {
 		if ($scope.isSessionListShown(skill)) {
@@ -44,13 +44,11 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 	};
 
 	$scope.showSessionsForSkill = function(skill) {
-		console.dir($scope.skills);
-		console.log($scope.skills.indexOf(skill));
 		if ($scope.skills.indexOf(skill) != -1 && $scope.skills[$scope.skills.indexOf(skill)].sessions === undefined ) {
 			$scope.skills[$scope.skills.indexOf(skill)].sessions = mxSession.listForSkill({skillId:skill._id});
 		}
 		$scope.currentSkillShowingSessions = skill._id;
-	}
+	};
 
 	$scope.gotoAddSession = function(skill) {
 		if (!!skill) {
@@ -67,7 +65,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 		if (!!session && confirm("Are you sure you want to delete this Session?")) {
 			mxSession.deleteById({id: session._id});
 		}
-	}
+	};
 
 
 

@@ -9,12 +9,12 @@ application.config(function($stateProvider, $urlRouterProvider) {
 	});
 
 	$stateProvider.state('addEditSession', {
-		params: {
+/*		params: {
 			sessionId: undefined,
 			sessionDuration: undefined,
 			sessionDate: undefined,
 			skillId: undefined
-		},
+		},*/
 		templateUrl: "partials/addEditSession.html",
 		location:"false"
 	});
@@ -24,7 +24,9 @@ application.config(function($stateProvider, $urlRouterProvider) {
 			skillId: undefined,
 			skillName: undefined
 		},
+//		url:'/editSkill/:skillId',
 		templateUrl: "partials/addEditSkill.html",
+		resolve: "console.log('switching to state AddEditSkill')",
 		location:"false"
 	});
 })

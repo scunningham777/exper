@@ -17,15 +17,15 @@
 			<div ng-repeat="skill in skills">
 				<ion-item item="skill" class="item-remove-animate" ng-click="toggleSessionList(skill)" ng-class="{active:isSessionListShown(skill)}">
 					{{skill.name}}
-					<ion-delete-button class="ion-minus-circled" ng-click="deleteSkill(skill)">
+					<ion-delete-button class="ion-minus-circled" ng-click="deleteSkill(skill); $event.stopPropagation();">
 					</ion-delete-button>
-					<ion-option-button class="button-assertive" ng-click="editSkill(skill)">
+					<ion-option-button class="button-assertive" ng-click="editSkill(skill); $event.stopPropagation();">
 		            	Edit
 		          	</ion-option-button>
-		          	<ion-option-button class="button-calm" ng-click="gotoAddSession(skill)">
+		          	<ion-option-button class="button-calm" ng-click="gotoAddSession(skill); $event.stopPropagation();">
 		            	Exper
 		         	</ion-option-button>
-		          	<ion-reorder-button class="ion-navicon" on-reorder="moveSkill(skill, $fromIndex, $toIndex)">
+		          	<ion-reorder-button class="ion-navicon" on-reorder="moveSkill(skill, $fromIndex, $toIndex); $event.stopPropagation();">
 		          	</ion-reorder-button>
 					<button class="badge badge-calm" ng-hide="data.showReorder" style="border-width:1px">{{skill.totalDuration}} hrs</button>
 				</ion-item>
