@@ -1,27 +1,23 @@
-<div ng-controller="mxAddEditSessionCtrl">
-    <script id="addEditSessionModal.html" type="text/ng-template">
-        <ion-modal-view>
-            <ion-header-bar class="bar bar-header">
-                <h1 class="title">{{isNewSession?'New':'Edit'}} Session</h1>
-                <button class="button button-clear" ng-click="closeModal()">Cancel</button>
-            </ion-header-bar>
-            <ion-content class="padding">
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Skill Trained</span>
-                        <input ng-model="curSession.skill_id" type="text">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Session Date</span>
-                        <input ng-model="curSession.date" type="text">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Session Duration</span>
-                        <input ng-model="curSession.duration" type="text">
-                    </label>
-                    <button class="button button-full button-calm" ng-click="submit(curSession)">Submit</button>
-                </div>
-            </ion-content>
-        </ion-modal-view>
-    </script>
-</div>
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header">
+        <h1 class="title">{{isNewSession?'New':'Edit'}} Session</h1>
+        <button class="button button-clear" ng-click="closeModal()">Cancel</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">Skill Trained</div>
+                <select ng-model="curSession.skill_id" ng-options="skill._id as skill.name for skill in skills"></select>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Session Date</span>
+                <input ng-model="curSession.date" type="date" class="pull-right">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Session Duration</span>
+                <input ng-model="curSession.duration" type="number" min="0" max="24" value="0" step=".25" class="pull-right">
+            </label>
+            <button class="button button-full button-calm" ng-click="submit(curSession)">Submit</button>
+        </div>
+    </ion-content>
+</ion-modal-view>

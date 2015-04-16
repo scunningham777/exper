@@ -15,12 +15,17 @@ application.config(function($stateProvider, $urlRouterProvider) {
 			sessionDate: null,
 			skillId: null
 		},
-		templateUrl: "partials/addEditSession.html",
+		controller: "mxAddEditSessionCtrl",
+		resolve: {
+			skills: function(mxSkill) {
+				return mxSkill.query().$promise;
+			}
+		},
 		location:"false"
 	});
 
 	$stateProvider.state('addEditSkill', {
-		templateUrl: "partials/addEditSkill.html",
+		controller: "mxAddEditSkillCtrl",
 		params: {
 			skillId: null,
 			skillName: null

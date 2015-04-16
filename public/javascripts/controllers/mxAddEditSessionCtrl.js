@@ -1,11 +1,10 @@
 'use strict';
 
-application.controller('mxAddEditSessionCtrl', function($scope, $state, $stateParams, $ionicModal, mxSkill, mxSession) {
-	$scope.skills = mxSkill.query(function() {
-		if ($scope.skills==null || $scope.skills.length < 1) {
-			$state.go('skills');
-		}
-	})
+application.controller('mxAddEditSessionCtrl', function($scope, $state, $stateParams, $ionicModal, skills, mxSession) {
+	if (skills==null || skills.length < 1) {
+		$state.go('skills');		
+	}
+	$scope.skills = skills;
 
 	$scope.isNewSession = !$stateParams.sessionId;
 	if (!$scope.isNewSession) {
@@ -18,15 +17,15 @@ application.controller('mxAddEditSessionCtrl', function($scope, $state, $statePa
 	}
 	else {
 		$scope.curSession = {
+			skill_id: !!$stateParams.skillId?$stateParams.skillId:null,
 			duration: 0,
 			date: new Date()
 		};
 	}
 	$scope.curSession.date.setMinutes($scope.curSession.date.getMinutes() - $scope.curSession.date.getTimezoneOffset());
 
-	$ionicModal.fromTemplateUrl('addEditSessionModal.html', {
+	$ionicModal.fromTemplateUrl('../../partials/addEditSession.html', {
 		scope: $scope,
-//		animation: 'slide-in-up'
 	}).then(function(modal) {
 		$scope.modal = modal;
 		$scope.modal.show();
@@ -41,7 +40,9 @@ application.controller('mxAddEditSessionCtrl', function($scope, $state, $statePa
 	}
 	//Cleanup the modal when we're done with it!
   	$scope.$on('$destroy', function() {
-    	$scope.modal.remove();
+  		if (!!$scope.modal) {
+	    	$scope.modal.remove();
+	    }
   	});
 
 
@@ -51,10 +52,10 @@ application.controller('mxAddEditSessionCtrl', function($scope, $state, $statePa
 		var sessionResource = new mxSession();
 		sessionResource = angular.extend(sessionResource, session);
 		if ($scope.isNewSession) {
-			sessionResource.$addNew(successCallback, errorCallback);
+//			sessionResource.$addNew(successCallback, errorCallback);
 		}
 		else {
-			sessionResource.$edit({id: $scope.curSession._id}, successCallback, errorCallback);
+//			sessionResource.$edit({id: $scope.curSession._id}, successCallback, errorCallback);
 		}
 		function successCallback(response) {
 			if (response.msg === '') {			//empty = sucessful

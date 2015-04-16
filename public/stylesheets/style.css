@@ -1,16 +1,17 @@
 /** For the phone/ionic version **/
 
-.item-accordion {
+.list .item.item-accordion {
+  transition: all 0.9s linear;
+  -webkit-transition: all 0.9s linear;
   line-height: 38px;
   padding-top: 0;
   padding-bottom: 0;
-  -webkit-transition: 0.09s all linear;
-  -moz-transition: 0.09s all linear;
-  transition: 0.09s all linear;
 }
+
 .list .item.item-accordion.ng-hide {
   line-height: 0px;
 }
+
 .list .item.item-accordion.ng-hide-add,
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;

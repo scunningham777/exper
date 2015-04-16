@@ -14,7 +14,7 @@ application.controller('mxAddEditSkillCtrl', function($scope, $state, $statePara
 		}
 	}
 
-	$ionicModal.fromTemplateUrl('addEditSkillModal.html', {
+	$ionicModal.fromTemplateUrl('../../partials/addEditSkill.html', {
 		scope: $scope,
 //		animation: 'slide-in-up'
 	}).then(function(modal) {
