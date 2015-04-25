@@ -61,12 +61,17 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 		}
 	};
 
-	$scope.deleteSession = function(session){
+	$scope.deleteSession = function(session) {
 		if (!!session && confirm("Are you sure you want to delete this Session?")) {
 			mxSession.deleteById({id: session._id});
 		}
 	};
 
+	$scope.editSession = function(session) {
+		console.log("Edit session on " + session.date);
+		$state.go('addEditSession', {sessionId: session._id, sessionDuration: session.duration, sessionDate: session.date, skillId: session.skill_id});
+
+	}
 
 
 	$scope.moveSkill = function(skill, fromIndex, toIndex) {

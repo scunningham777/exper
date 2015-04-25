@@ -34,6 +34,9 @@
 					<button class="badge badge-light" style="background-color:#D0DCEB; border-width:1px">{{session.duration}} hrs</button>
 					<ion-delete-button class="ion-minus-circled" ng-click="deleteSession(session)">
 					</ion-delete-button>
+					<ion-option-button class="button-assertive" ng-click="editSession(session); $event.stopPropagation();">
+		            	Edit
+		          	</ion-option-button>
 				</ion-item>
 			</div>
 		</ion-list>

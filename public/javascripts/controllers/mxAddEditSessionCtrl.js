@@ -11,13 +11,13 @@ application.controller('mxAddEditSessionCtrl', function($scope, $state, $statePa
 		$scope.curSession = {
 			_id: $stateParams.sessionId,
 			duration: $stateParams.sessionDuration,
-			date: $stateParams.sessionDate,
-			skill_id: $stateParams.skillId
+			date: new Date($stateParams.sessionDate),
+			skillId: $stateParams.skillId
 		}
 	}
 	else {
 		$scope.curSession = {
-			skill_id: !!$stateParams.skillId?$stateParams.skillId:null,
+			skillId: !!$stateParams.skillId?$stateParams.skillId:null,
 			duration: 0,
 			date: new Date()
 		};
@@ -52,10 +52,10 @@ application.controller('mxAddEditSessionCtrl', function($scope, $state, $statePa
 		var sessionResource = new mxSession();
 		sessionResource = angular.extend(sessionResource, session);
 		if ($scope.isNewSession) {
-//			sessionResource.$addNew(successCallback, errorCallback);
+			sessionResource.$addNew({skillId: sessionResource.skillId}, successCallback, errorCallback);
 		}
 		else {
-//			sessionResource.$edit({id: $scope.curSession._id}, successCallback, errorCallback);
+			sessionResource.$edit({id: sessionResource._id}, successCallback, errorCallback);
 		}
 		function successCallback(response) {
 			if (response.msg === '') {			//empty = sucessful
