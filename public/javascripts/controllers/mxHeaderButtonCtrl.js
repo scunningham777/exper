@@ -20,12 +20,10 @@ application.controller('mxHeaderButtonCtrl', function($scope, $http, $location, 
 
     $scope.confirmSignout = function() {
         if (confirm('Are you sure you want to log out?')){
-            $http.get('/signout').then(function() {
-                    $location.replace(
-
-                    );
-                }
-            );
+//            $http.get('/signout').then(function() {
+                    window.location.assign("/signout");
+ //               }
+//            );
         }
     };
 
