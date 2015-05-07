@@ -32,4 +32,4 @@ application.config(function($stateProvider, $urlRouterProvider) {
 		},
 		location:"false"
 	});
-})
+});

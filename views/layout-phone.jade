@@ -7,7 +7,9 @@ html
         link(rel='stylesheet', href='/lib/ionic/css/ionic.css')
         include scripts
     body(class='ionic', style='height:100vh', ng-app='exper')
-        div(class='bar bar-header bar-dark' style="background-color:#494D52;")
+        div(class='bar bar-header bar-dark', style="background-color:#494D52;")
             h1(class='title') Exper
+            div(class="buttons" ng-controller="mxHeaderButtonCtrl")
+                button(class="button button-icon ion-more", ng-click="openPopover($event)")
         div(ui-view)
             block content
