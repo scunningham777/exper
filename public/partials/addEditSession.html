@@ -11,11 +11,11 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">Session Date</span>
-                <input ng-model="curSession.date" type="date" class="pull-right">
+                <input ng-model="curSession.date" type="date" style="text-align:right">
             </label>
             <label class="item item-input">
                 <span class="input-label">Session Duration</span>
-                <input ng-model="curSession.duration" type="number" min="0" max="24" value="0" step=".25" class="pull-right">
+                <input ng-model="curSession.duration" type="number" min="0" max="24" value="0" step=".25" style="text-align:center">
             </label>
             <button class="button button-full button-calm" ng-click="submit(curSession)">Submit</button>
         </div>
