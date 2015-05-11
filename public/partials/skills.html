@@ -14,7 +14,7 @@
     </ion-header-bar>
     <ion-content class="has-subheader">
 		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-			<div ng-repeat="skill in skills">
+			<div ng-repeat="skill in skills | orderBy:'name'">
 				<ion-item item="skill" class="item-remove-animate" ng-click="toggleSessionList(skill)" ng-class="{active:isSessionListShown(skill)}">
 					{{skill.name}}
 					<ion-delete-button class="ion-minus-circled" ng-click="deleteSkill(skill); $event.stopPropagation();">

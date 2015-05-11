@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('mxHeaderButtonCtrl', function($scope, $http, $location, $ionicPopover) {
+application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopover) {
 
     $scope.links = [
         {text: 'Log Out', onClick: 'confirmSignout'}
@@ -20,10 +20,7 @@ application.controller('mxHeaderButtonCtrl', function($scope, $http, $location, 
 
     $scope.confirmSignout = function() {
         if (confirm('Are you sure you want to log out?')){
-//            $http.get('/signout').then(function() {
-                    window.location.assign("/signout");
- //               }
-//            );
+            window.location.assign("/signout");
         }
     };
 

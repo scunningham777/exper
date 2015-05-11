@@ -1,9 +1,6 @@
 application.config(function($stateProvider, $urlRouterProvider) {
 
-/*	$urlRouterProvider.when("/signout", function() {
-		window.location.reload();
-	});
-*/	$urlRouterProvider.otherwise("/");
+	$urlRouterProvider.otherwise("/");
 
 	$stateProvider.state('skills', {
 		url: "/",
