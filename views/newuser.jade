@@ -5,7 +5,7 @@ block content
     #message
     if message
         h3(class="text-center assertive") #{message}        
-    form#formAddUser(class='list', action='/signup', method='POST')
+    form#formAddUser(name='newUser', class='list', action='/signup', method='POST', novalidate)
         label(class='item item-input')
             span(class='input-label') Username
             input#inputUserName(type="text", name="username", class="form-control", required, autofocus=true)
@@ -15,5 +15,5 @@ block content
         label(class='item item-input')
             span(class='input-label') Email
             input#inputUserEmail(type="email", name="email", class="form-control", required)
-        button#btnSubmit(class="button button-block button-calm", type="submit") Submit
+        button#btnSubmit(class="button button-block button-calm", type="submit", ng-disabled="newUser.username1.$pristine || myForm.username1.$dirty && myForm.username1.$invalid") Submit
     a(href="/", class="button button-block", style="background-color:#D0DCEB") Cancel
