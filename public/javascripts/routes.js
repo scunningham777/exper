@@ -32,4 +32,9 @@ application.config(function($stateProvider, $urlRouterProvider) {
 		},
 		location:"false"
 	});
+
+	$stateProvider.state('editUser', {
+		controller: "xpEditUserCtrl",
+		location:"false"
+	})
 });

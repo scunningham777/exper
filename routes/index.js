@@ -53,7 +53,7 @@ module.exports = function(passport){
     /* GET Home Page */
     router.get('/home', isAuthenticated, function(req, res){
         if (isMobile(req)) {
-          res.render('layout-phone', {username: req.user.username, title: 'Exper'});
+          res.render('layout-phone', {username: req.user.username, userId: req.user._id, title: 'Exper'});
         }
         else {
           res.render('index', { username: req.user.username, title: 'Exper' });

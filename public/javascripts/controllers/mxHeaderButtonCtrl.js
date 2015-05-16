@@ -1,9 +1,10 @@
 'use strict';
 
-application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopover) {
+application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopover, $state) {
 
     $scope.links = [
-        {text: 'Log Out', onClick: 'confirmSignout'}
+        {text: 'Log Out', onClick: 'confirmSignout'},
+        {text: 'Edit Account', onClick: "goToEditUser"}
     ];
 
     var template = '<ion-popover-view class="popover-fit">' +
@@ -24,6 +25,10 @@ application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopov
         }
     };
 
+    $scope.goToEditUser = function() {
+        $scope.closePopover();
+        $state.go('editUser');
+    }
 
     $scope.openPopover = function($event) {
         $scope.popover.show($event);

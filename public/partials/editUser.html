@@ -1,0 +1,23 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header">
+        <h1 class="title">Edit Your Account</h1>
+        <button class="button button-clear" ng-click="closeModal()">Cancel</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Your Username</span>
+                <input ng-model="curUser.username" type="text">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Your Email</span>
+                <input ng-model="curUser.email" type="text">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">New Password</span>
+                <input ng-model="curUser.newPassword" type="text">
+            </label>
+            <button class="button button-full button-calm" ng-click="submit(curUser)">Update</button>
+        </div>
+    </ion-content>
+</ion-modal-view>

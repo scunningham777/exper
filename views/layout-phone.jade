@@ -7,6 +7,9 @@ html
         link(rel='stylesheet', href='/lib/ionic/css/ionic.css')
         include scripts
     body(class='ionic', style='height:100vh', ng-app='exper')
+        if !!userId
+            script.
+                window.bootstrappedExperCurrentUserId = userId}
         div(class='bar bar-header bar-dark', style="background-color:#494D52;")
             h1(class='title') Exper
             div(class="buttons" ng-controller="mxHeaderButtonCtrl")
