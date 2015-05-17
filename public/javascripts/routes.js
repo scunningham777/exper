@@ -36,5 +36,10 @@ application.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('editUser', {
 		controller: "xpEditUserCtrl",
 		location:"false"
-	})
+	});
+
+	$stateProvider.state('help', {
+		controller: "xpHelpCtrl",
+		location:"false"
+	});
 });

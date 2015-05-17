@@ -4,20 +4,18 @@
         <button class="button button-clear" ng-click="closeModal()">Cancel</button>
     </ion-header-bar>
     <ion-content class="padding">
-        <div class="list">
-            <label class="item item-input">
-                <span class="input-label">Your Username</span>
-                <input ng-model="curUser.username" type="text">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Your Email</span>
-                <input ng-model="curUser.email" type="text">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">New Password</span>
-                <input ng-model="curUser.newPassword" type="text">
-            </label>
-            <button class="button button-full button-calm" ng-click="submit(curUser)">Update</button>
-        </div>
+        <form name="editUserForm" novalidate="">
+            <div class="list">
+                <label class="item item-input item-stacked-label" ng-class="{'has-changes': editUserForm.username.$dirty}">
+                    <span class="input-label">Username</span>
+                    <input name="username" ng-model="curUser.username" type="text">
+                </label>
+                <label class="item item-input item-stacked-label" ng-class="{'has-changes': editUserForm.email.$dirty}">
+                    <span class="input-label">Email</span>
+                    <input name="email" ng-model="curUser.email" type="text">
+                </label>
+                <button class="button button-full button-calm" ng-click="submit(curUser)">Update</button>
+            </div>
+        </form>
     </ion-content>
 </ion-modal-view>

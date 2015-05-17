@@ -3,13 +3,13 @@ html
     head
         meta(name='viewport', content='initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width')
         title= title
-        link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='/lib/ionic/css/ionic.css')
-        include scripts
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    include scripts
     body(class='ionic', style='height:100vh', ng-app='exper')
         if !!userId
             script.
-                window.bootstrappedExperCurrentUserId = userId}
+                window.bootstrappedExperCurrentUserId = !{JSON.stringify(userId)}
         div(class='bar bar-header bar-dark', style="background-color:#494D52;")
             h1(class='title') Exper
             div(class="buttons" ng-controller="mxHeaderButtonCtrl")

@@ -28,6 +28,14 @@
 	padding-right: 16px;
 }
 
+.has-changes {
+	border-bottom: 3px solid #11c1f3;
+}
+
+/*.item.active, .item.active .item-content {
+	background-color: #D0DCEB;
+}*/
+
 body {
   padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;

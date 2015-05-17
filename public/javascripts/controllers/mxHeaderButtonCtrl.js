@@ -4,11 +4,12 @@ application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopov
 
     $scope.links = [
         {text: 'Log Out', onClick: 'confirmSignout'},
-        {text: 'Edit Account', onClick: "goToEditUser"}
+        {text: 'Edit Account', onClick: "goToEditUser"},
+        {text: 'Help', onClick: "goToHelp"}
     ];
 
     var template = '<ion-popover-view class="popover-fit">' +
-        '<div class="list" style="margin-top:20px;">' +
+        '<div class="list" style="margin-top:10px; margin-bottom:10px">' +
             '<a class="item" ng-repeat="link in links" ng-click={{link.onClick}}()>' +
                 '{{link.text}}' +
             '</a>' +
@@ -28,7 +29,12 @@ application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopov
     $scope.goToEditUser = function() {
         $scope.closePopover();
         $state.go('editUser');
-    }
+    };
+
+    $scope.goToHelp = function() {
+        $scope.closePopover();
+        $state.go('help');
+    };
 
     $scope.openPopover = function($event) {
         $scope.popover.show($event);

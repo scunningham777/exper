@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var isAuthed = require('./isAuthenticated');
+
 /*
  * GET userlist.
  */
@@ -11,49 +13,29 @@ router.get('/userlist', function(req, res) {
     });
 });
 
-
 /*
- * POST user login
+ * GET user by user ID
  */
-router.post('/login', function(req, res) {
+router.get('/:userId', isAuthed, function(req, res) {
 	var db = req.db;
-	db.collection('usercollection').findOne({username:req.body.username, password:req.body.password}, function (err, result) {
-		if (err) {
-			console.info(err);
-			res.send({msg: 'error: ' + err});
-		}
-		if (result) {		
-			req.session.currentUserId = result._id;
-			res.send({user_id: result._id});
-		}
-		else {
-			res.send({msg: 'invalid credentials'});
-		}
-	});
+	db.collection('usercollection').findById(req.params.userId, function(err, result) {
+		res.json({_id: result._id, username: result.username, email: result.email})
+	})
+});
+
+router.post('/:userId', isAuthed, function(req, res) {
+	var db = req.db;
+	console.dir(req.body);
+	db.collection('usercollection').updateById(req.params.userId, {$set:{username: req.body.username, email: req.body.email}}, function(err, result) {
+		res.send(
+			(err === null) ? { msg: '' } : { msg: err }
+		);
+	})
 });
 
 /*
- * POST user signup
+ * user login and signup now handled by passport (see routes/index.js)
  */
-router.post('/adduniqueuser', function(req, res) {
-	var db = req.db;
-    db.collection('usercollection').find({username:req.body.username, password:req.body.password}).toArray(function(err, result) {
-        if (result.length > 0) {
-            console.info('User Account with same username/password already exists');
-            res.send( {msg: 'User Account with same username/password already exists'});
-        }
-        else {
-            db.collection('usercollection').insert({username:req.body.username, password:req.body.password}, function(err, result){
-            	if (err === null) {
-					req.session.currentUserId = result._id;
-					res.send({user_id: result._id});
-            	}
-                else {
-                	res.send({ msg: err });
-                }
-            });            
-        }
-    })
-})
+
 
 module.exports = router;
