@@ -1,11 +1,11 @@
 'use strict';
 
-application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopover, $state) {
+application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopover, $state, xpIdentity) {
 
     $scope.links = [
-        {text: 'Log Out', onClick: 'confirmSignout'},
         {text: 'Edit Account', onClick: "goToEditUser"},
-        {text: 'Help', onClick: "goToHelp"}
+        {text: 'Help', onClick: "goToHelp"},
+        {text: 'Log Out', onClick: 'confirmSignout'}
     ];
 
     var template = '<ion-popover-view class="popover-fit">' +
@@ -22,7 +22,7 @@ application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopov
 
     $scope.confirmSignout = function() {
         if (confirm('Are you sure you want to log out?')){
-            window.location.assign("/signout");
+            xpIdentity.logOut();
         }
     };
 

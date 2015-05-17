@@ -5,6 +5,9 @@ application.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('skills', {
 		url: "/",
 		templateUrl: "partials/skills.html",
+		resolve: {auth: function(xpIdentity) {
+			xpIdentity.isLoggedIn();
+		}},
 		location:"false"
 	});
 
@@ -43,3 +46,11 @@ application.config(function($stateProvider, $urlRouterProvider) {
 		location:"false"
 	});
 });
+
+application.run(function($rootScope) {
+	$rootScope.$on('$routeChangeError', function(evt, current, previous, rejection) {
+		if (rejection === 'not authenticated') {
+			window.location.assign("/signout");
+		}
+	})
+})

@@ -52,6 +52,7 @@ module.exports = function(passport){
 
     /* GET Home Page */
     router.get('/home', isAuthenticated, function(req, res){
+        res.set('Cache-Control', 'no-cache, max-age=0, must-revalidate, no-store');
         if (isMobile(req)) {
           res.render('layout-phone', {username: req.user.username, userId: req.user._id, title: 'Exper'});
         }
