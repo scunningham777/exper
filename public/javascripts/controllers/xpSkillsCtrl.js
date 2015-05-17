@@ -1,12 +1,12 @@
 'use strict';
 
-application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSession) {
+application.controller('xpSkillsCtrl', function($scope, $state, xpSkill, xpSession) {
 	$scope.data = {
 		showDelete:false,
 		showReorder:false
 	};
 
-	$scope.skills = mxSkill.listWithDuration();
+	$scope.skills = xpSkill.listWithDuration();
 	$scope.currentSkillShowingSessions = null;
 
 	$scope.gotoAddSkill = function() {
@@ -22,7 +22,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 	$scope.deleteSkill = function(skill) {
 		if (confirm("Are you sure you want to delete Skill \"" + skill.name + "\" and all of it's data?")) {
 			console.log("delete skill " + skill.name)
-			var skillToDelete = new mxSkill();
+			var skillToDelete = new xpSkill();
 
 			skillToDelete.$deleteById({id: skill._id}, function() {
 				console.log("Skill deleted: " + skill.name);
@@ -45,7 +45,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 
 	$scope.showSessionsForSkill = function(skill) {
 		if ($scope.skills.indexOf(skill) != -1 && $scope.skills[$scope.skills.indexOf(skill)].sessions === undefined ) {
-			$scope.skills[$scope.skills.indexOf(skill)].sessions = mxSession.listForSkill({skillId:skill._id});
+			$scope.skills[$scope.skills.indexOf(skill)].sessions = xpSession.listForSkill({skillId:skill._id});
 		}
 		$scope.currentSkillShowingSessions = skill._id;
 	};
@@ -63,7 +63,7 @@ application.controller('mxSkillsCtrl', function($scope, $state, mxSkill, mxSessi
 
 	$scope.deleteSession = function(session) {
 		if (!!session && confirm("Are you sure you want to delete this Session?")) {
-			mxSession.deleteById({id: session._id});
+			xpSession.deleteById({id: session._id});
 		}
 	};
 

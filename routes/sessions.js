@@ -15,10 +15,11 @@ exports.listForSkill = function(req, res) {
  */
 exports.add = function(req, res) {
     var db = req.db;
-    var newSession = req.body;
+    var newSession = {};
     newSession.skill_id = req.params.skill_id;
     newSession.user_id = req.session.currentUserId;
     newSession.duration = parseFloat(req.body.duration);
+    newSession.date = req.body.date;
     db.collection('sessioncollection').insert(newSession, function(err, result) {
             res.send(
                 (err === null) ? { msg: '' } : { msg: err }

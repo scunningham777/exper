@@ -1,4 +1,4 @@
-application.factory('mxSession', function($resource) {
+application.factory('xpSession', function($resource) {
 	var SessionResource = $resource('/:prefix/:skillId/sessions/:action/:id', {}, {
 		listForSkill: {method: 'GET', params:{prefix: 'skills', skillId: '@skillId'}, isArray:true},
 		getById: {method: 'GET', params:{id: '@id'}, isArray: false},

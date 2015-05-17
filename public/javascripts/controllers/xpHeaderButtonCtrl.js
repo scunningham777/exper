@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('mxHeaderButtonCtrl', function($scope, $http, $ionicPopover, $state, xpIdentity) {
+application.controller('xpHeaderButtonCtrl', function($scope, $http, $ionicPopover, $state, xpIdentity) {
 
     $scope.links = [
         {text: 'Edit Account', onClick: "goToEditUser"},

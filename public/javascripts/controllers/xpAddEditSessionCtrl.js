@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('mxAddEditSessionCtrl', function($scope, $state, $stateParams, $ionicModal, skills, mxSession) {
+application.controller('xpAddEditSessionCtrl', function($scope, $state, $stateParams, $ionicModal, skills, xpSession) {
 	if (skills==null || skills.length < 1) {
 		$state.go('skills');		
 	}
@@ -49,7 +49,7 @@ application.controller('mxAddEditSessionCtrl', function($scope, $state, $statePa
 	$scope.submit = function(session) {
 		console.log("createSession clicked");
 
-		var sessionResource = new mxSession();
+		var sessionResource = new xpSession();
 		sessionResource = angular.extend(sessionResource, session);
 		if ($scope.isNewSession) {
 			sessionResource.$addNew({skillId: sessionResource.skillId}, successCallback, errorCallback);

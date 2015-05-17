@@ -18,17 +18,17 @@ application.config(function($stateProvider, $urlRouterProvider) {
 			sessionDate: null,
 			skillId: null
 		},
-		controller: "mxAddEditSessionCtrl",
+		controller: "xpAddEditSessionCtrl",
 		resolve: {
-			skills: function(mxSkill) {
-				return mxSkill.query().$promise;
+			skills: function(xpSkill) {
+				return xpSkill.query().$promise;
 			}
 		},
 		location:"false"
 	});
 
 	$stateProvider.state('addEditSkill', {
-		controller: "mxAddEditSkillCtrl",
+		controller: "xpAddEditSkillCtrl",
 		params: {
 			skillId: null,
 			skillName: null

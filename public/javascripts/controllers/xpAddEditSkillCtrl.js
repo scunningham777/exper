@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('mxAddEditSkillCtrl', function($scope, $state, $stateParams, $ionicModal, mxSkill) {
+application.controller('xpAddEditSkillCtrl', function($scope, $state, $stateParams, $ionicModal, xpSkill) {
 	$scope.isNewSkill = !$stateParams.skillId;
 	if (!$scope.isNewSkill) {
 		$scope.curSkill = {
@@ -42,7 +42,7 @@ application.controller('mxAddEditSkillCtrl', function($scope, $state, $statePara
 			return;
 		}
 
-		var skillResource = new mxSkill();
+		var skillResource = new xpSkill();
 		skillResource.name = skill.name;
 		if ($scope.isNewSkill) {
 			skillResource.$addNew(successCallback, errorCallback);
