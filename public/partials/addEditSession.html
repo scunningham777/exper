@@ -7,16 +7,14 @@
         <div class="list">
             <label class="item item-input item-select">
                 <div class="input-label">Skill Trained:</div>
-                <div>
-                    <select ng-model="curSession.skillId" ng-options="skill._id as skill.name for skill in skills" style="position:inherit"></select>
-                </div>
+                <select ng-model="curSession.skillId" ng-options="skill._id as skill.name for skill in skills" style="position:inherit"></select>
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Session Date:</span>
                 <input ng-model="curSession.date" type="date">
             </label>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Session Duration (hours):</span>
+                <span class="input-label">Session Duration (Hours):</span>
                 <input ng-model="curSession.duration" type="number" min="0" max="24" value="0" step=".25">
             </label>
             <button class="button button-full button-calm" ng-click="submit(curSession)">Submit</button>
